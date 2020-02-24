@@ -1,6 +1,12 @@
-# lece
+# electron
 
-> lece electron
+> An electron-vue project
+
+### win构建重要  注意使用 vs2015
+```
+npm install --global --production windows-build-tools --vs2015
+```
+---
 
 #### Build Setup
 
@@ -22,7 +28,3 @@ npm test
 npm run lint
 
 ```
-
----
-
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).

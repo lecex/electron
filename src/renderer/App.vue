@@ -1,20 +1,31 @@
 <template>
   <div id="app">
-    <landing-page></landing-page>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-  import LandingPage from '@/components/LandingPage'
-
   export default {
-    name: 'lece',
-    components: {
-      LandingPage
+    name: 'App',
+    mounted() {
     }
   }
+  
 </script>
 
-<style>
-  /* CSS */
+<style lang="less">
+@import "~@/assets/less/atom/syntax-variables.less";
+//自动移滚动条样式
+::-webkit-scrollbar{
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-thumb{
+  border-radius: 1em;
+  background-color: @syntax-wrap-guide-color;
+}
+::-webkit-scrollbar-track{
+  border-radius: 1em;
+  background-color: @syntax-background-color;
+}
 </style>

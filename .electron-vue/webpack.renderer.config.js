@@ -6,7 +6,7 @@ const path = require('path')
 const { dependencies } = require('../package.json')
 const webpack = require('webpack')
 
-const MinifyPlugin = require("babel-minify-webpack-plugin")
+const BabiliWebpackPlugin = require('babili-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -86,7 +86,16 @@ let rendererConfig = {
         }
       },
       {
+        test: /\.svg$/,
+        loader: 'svg-sprite-loader',
+        include: [path.join(__dirname, '../src/renderer/icons')],
+        options: {
+          symbolId: 'icon-[name]'
+        }
+      },
+      {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        exclude: [path.join(__dirname, '../src/renderer/icons')],
         use: {
           loader: 'url-loader',
           query: {
@@ -170,7 +179,7 @@ if (process.env.NODE_ENV === 'production') {
   rendererConfig.devtool = ''
 
   rendererConfig.plugins.push(
-    new MinifyPlugin(),
+    new BabiliWebpackPlugin(),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '../static'),

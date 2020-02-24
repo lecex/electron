@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Menu } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -15,14 +15,35 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-function createWindow () {
+function createWindow() {
+  if (process.platform === 'darwin') {
+    const template = [
+      {
+        label: 'Application',
+        submenu: [
+          { label: 'Quit', accelerator: 'Command+Q', click: function() { app.quit() } }
+        ]
+      },
+      {
+        label: 'Edit',
+        submenu: [
+          { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
+          { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' }
+        ]
+      }
+    ]
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+  } else {
+    Menu.setApplicationMenu(null)
+  }
   /**
    * Initial window options
    */
   mainWindow = new BrowserWindow({
     height: 563,
     useContentSize: true,
-    width: 1000
+    width: 1000,
+    webPreferences: { webSecurity: false } // 允许 electron 跨域
   })
 
   mainWindow.loadURL(winURL)
@@ -30,6 +51,7 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+  mainWindow.webContents.openDevTools()
 }
 
 app.on('ready', createWindow)
