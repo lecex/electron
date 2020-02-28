@@ -1,25 +1,25 @@
 import request from '@/utils/request'
 
-export function Exist(data) {
+export function UpdateOrCreate(data) {
   return request({
     method: 'post',
     data: {
       'service': 'user-api',
-      'method': 'Users.Exist',
+      'method': 'FrontPermits.UpdateOrCreate',
       'request': {
-        'user': data
+        'front_permit': data
       }
     }
   })
 }
 
-export function Info() {
+export function All() {
   return request({
     method: 'post',
     data: {
-      service: 'user-api',
-      method: 'Users.Info',
-      request: {}
+      'service': 'user-api',
+      'method': 'FrontPermits.All',
+      'request': {}
     }
   })
 }
@@ -29,7 +29,7 @@ export function List(data) {
     method: 'post',
     data: {
       'service': 'user-api',
-      'method': 'Users.List',
+      'method': 'FrontPermits.List',
       'request': {
         'list_query': data
       }
@@ -42,9 +42,9 @@ export function Get(data) {
     method: 'post',
     data: {
       'service': 'user-api',
-      'method': 'Users.Get',
+      'method': 'FrontPermits.Get',
       'request': {
-        'user': data
+        'front_permit': data
       }
     }
   })
@@ -55,9 +55,9 @@ export function Create(data) {
     method: 'post',
     data: {
       'service': 'user-api',
-      'method': 'Users.Create',
+      'method': 'FrontPermits.Create',
       'request': {
-        'user': data
+        'front_permit': data
       }
     }
   })
@@ -67,9 +67,9 @@ export function Update(data) {
     method: 'post',
     data: {
       'service': 'user-api',
-      'method': 'Users.Update',
+      'method': 'FrontPermits.Update',
       'request': {
-        'user': data
+        'front_permit': data
       }
     }
   })
@@ -79,9 +79,9 @@ export function Delete(data) {
     method: 'post',
     data: {
       'service': 'user-api',
-      'method': 'Users.Delete',
+      'method': 'FrontPermits.Delete',
       'request': {
-        'user': data
+        'front_permit': data
       }
     }
   })

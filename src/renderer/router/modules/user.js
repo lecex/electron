@@ -2,60 +2,52 @@
 
 import Layout from '@/layout'
 
-export default {
+const userRouter = {
   path: '/user',
   component: Layout,
-  redirect: '/user/index',
-  name: 'user',
+  redirect: '/user/user-list',
+  name: 'User',
   meta: {
-    title: '终端',
-    icon: 'user',
-    roles: ['user']
+    title: '用户',
+    icon: 'user'
   },
   children: [
     {
-      path: 'cashier',
-      name: 'Cashier',
-      component: () => import('@/views/user/cashier/index'),
+      path: 'user/list',
+      component: () => import('@/views/user/list'),
+      name: 'UserList',
       meta: {
-        title: '收银',
-        icon: 'cashier',
-        permits: ['ui_user_index'],
-        roles: ['user']
+        title: '用户列表',
+        permits: ['ui_user_list']
       }
     },
     {
-      path: 'order',
-      name: 'Order',
-      component: () => import('@/views/user/order/index'),
+      path: 'user/role',
+      component: () => import('@/views/user/role'),
+      name: 'UserRole',
       meta: {
-        title: '订单',
-        icon: 'order',
-        permits: ['ui_user_order'],
-        roles: ['user']
+        title: '用户角色',
+        permits: ['ui_role_list']
       }
     },
     {
-      path: 'inventory',
-      name: 'Inventory',
-      component: () => import('@/views/user/inventory/index'),
+      path: 'user/permission/front',
+      component: () => import('@/views/user/permission/front'),
+      name: 'FrontPermission',
       meta: {
-        title: '盘点',
-        icon: 'inventory',
-        permits: ['ui_user_inventory'],
-        roles: ['user']
+        title: '前端权限',
+        permits: ['ui_front_permit_list']
       }
     },
     {
-      path: 'config',
-      name: 'Config',
-      component: () => import('@/views/user/config/index'),
+      path: 'user/permission/micro',
+      component: () => import('@/views/user/permission/micro'),
+      name: 'MicroPermission',
       meta: {
-        title: '配置',
-        icon: 'config',
-        permits: ['ui_user_config'],
-        roles: ['user']
+        title: '微服务权限',
+        permits: ['ui_micro_permit_list']
       }
     }
   ]
 }
+export default userRouter

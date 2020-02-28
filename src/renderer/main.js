@@ -10,6 +10,8 @@ import router from './router'
 import store from './store'
 import * as filters from './filters' // global filters
 
+import directivePermission from './directive/permission/index.js' // 权限判断指令
+
 import '@/styles/index.scss' // global css
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -20,6 +22,7 @@ Vue.config.productionTip = false
 
 // set ElementUI lang to EN
 Vue.use(ElementUI)
+Vue.use(directivePermission)
 
 // register global utility filters
 Object.keys(filters).forEach(key => {

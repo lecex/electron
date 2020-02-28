@@ -1,25 +1,12 @@
 import request from '@/utils/request'
 
-export function Exist(data) {
+export function All() {
   return request({
     method: 'post',
     data: {
       'service': 'user-api',
-      'method': 'Users.Exist',
-      'request': {
-        'user': data
-      }
-    }
-  })
-}
-
-export function Info() {
-  return request({
-    method: 'post',
-    data: {
-      service: 'user-api',
-      method: 'Users.Info',
-      request: {}
+      'method': 'Permissions.All',
+      'request': {}
     }
   })
 }
@@ -29,7 +16,7 @@ export function List(data) {
     method: 'post',
     data: {
       'service': 'user-api',
-      'method': 'Users.List',
+      'method': 'Permissions.List',
       'request': {
         'list_query': data
       }
@@ -42,9 +29,9 @@ export function Get(data) {
     method: 'post',
     data: {
       'service': 'user-api',
-      'method': 'Users.Get',
+      'method': 'Permissions.Get',
       'request': {
-        'user': data
+        'permission': data
       }
     }
   })
@@ -55,9 +42,9 @@ export function Create(data) {
     method: 'post',
     data: {
       'service': 'user-api',
-      'method': 'Users.Create',
+      'method': 'Permissions.Create',
       'request': {
-        'user': data
+        'permission': data
       }
     }
   })
@@ -67,9 +54,9 @@ export function Update(data) {
     method: 'post',
     data: {
       'service': 'user-api',
-      'method': 'Users.Update',
+      'method': 'Permissions.Update',
       'request': {
-        'user': data
+        'permission': data
       }
     }
   })
@@ -79,9 +66,9 @@ export function Delete(data) {
     method: 'post',
     data: {
       'service': 'user-api',
-      'method': 'Users.Delete',
+      'method': 'Permissions.Delete',
       'request': {
-        'user': data
+        'permission': data
       }
     }
   })

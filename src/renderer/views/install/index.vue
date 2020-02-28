@@ -68,11 +68,11 @@ export default {
     next(formName) {
       this.$refs[formName].validate(async(valid) => {
         if (valid) {
-          if (this.active === 1) {
+          if (this.active === 0) {
             this.activities = []
             this.initConfig()
           }
-          if (this.active++ > 2) this.active = 2
+          if (this.active++ > 0) this.active = 0
         } else {
           console.log('error submit!!')
           return false

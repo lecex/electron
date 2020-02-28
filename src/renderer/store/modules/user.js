@@ -59,9 +59,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       // 客户端模式
       Login({ username: username.trim(), password: password }).then(response => {
-        const { data, valid } = response
+        const { data } = response
         commit('SET_TOKEN', data.token)
-        resolve(valid)
+        resolve(data.token)
       }).catch(error => {
         reject(error)
       })
