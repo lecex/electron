@@ -3,7 +3,7 @@
  */
 
 const crypto = require('crypto')
-const Bcrypt = require('bcrypt')
+const Bcrypt = require('bcryptjs')
 
 const bcrypt = {
   saltRounds: 10, // 生成salt的迭代次数
