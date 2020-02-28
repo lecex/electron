@@ -49,7 +49,7 @@
       </el-table-column>
       <el-table-column label="创建时间" prop="created_at" sortable="custom" align="center" width="180">
         <template slot-scope="scope">
-          <span>{{ scope.row.created_at | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span>{{ scope.row.created_at  }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
@@ -127,7 +127,6 @@ import { All } from '@/api/role'
 import { GetRoles, UpdateRoles } from '@/api/casbin'
 import { Exist, List, Create, Delete, Update } from '@/api/user'
 import waves from '@/directive/waves' // waves directive
-import { parseTime } from '@/utils'
 import DialogPicture from '@/components/DialogPicture'
 import CheckboxIndeterminate from '@/components/CheckboxIndeterminate'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -275,7 +274,6 @@ export default {
     }
   },
   created() {
-    console.log(parseTime(new Date()))
     this.getRoles()
     this.getList()
   },

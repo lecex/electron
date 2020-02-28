@@ -43,7 +43,7 @@
       </el-table-column>
       <el-table-column label="创建时间" prop="created_at" sortable="custom" align="center" width="180">
         <template slot-scope="scope">
-          <span>{{ scope.row.created_at | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span>{{ scope.row.created_at }}</span>
         </template>
       </el-table-column>
       <!-- <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
@@ -87,7 +87,6 @@
 <script>
 import { List, Create, Delete, Update } from '@/api/front-permit'
 import waves from '@/directive/waves' // waves directive
-import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 export default {
   name: 'FrontPermitList',
@@ -141,7 +140,6 @@ export default {
     }
   },
   created() {
-    console.log(parseTime(new Date()))
     this.getList()
   },
   mounted() {},
