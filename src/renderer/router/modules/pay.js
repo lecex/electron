@@ -12,6 +12,33 @@ const payRouter = {
     icon: 'pay'
   },
   children: [
+    {
+      path: 'pay/self',
+      component: () => import('@/views/pay/config/self'),
+      name: 'PaySelf',
+      meta: {
+        title: '支付配置',
+        permits: ['ui_pay_self']
+      }
+    },
+    {
+      path: 'pay/config',
+      component: () => import('@/views/pay/config'),
+      name: 'PayConfig',
+      meta: {
+        title: '配置列表',
+        permits: ['ui_pay_config']
+      }
+    },
+    {
+      path: 'pay/order',
+      component: () => import('@/views/pay/order'),
+      name: 'PayOrder',
+      meta: {
+        title: '订单列表',
+        permits: ['ui_pay_order']
+      }
+    }
   ]
 }
 export default payRouter
