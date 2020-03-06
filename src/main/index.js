@@ -51,7 +51,7 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools() //开发者调试工具
 }
 
 app.on('ready', createWindow)
