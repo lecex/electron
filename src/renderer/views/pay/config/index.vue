@@ -31,6 +31,13 @@
             <el-form-item label="子商家ID">
               <el-input v-model="props.row.wechat.subMchId"></el-input>
             </el-form-item>
+            <el-form-item label="沙盒状态">
+              <el-switch
+                v-model="props.row.wechat.sandbox"
+                active-color="#13ce66"
+                inactive-color="#ff4949">
+              </el-switch>
+            </el-form-item>
             <span><svg-icon icon-class="alipay" class="alipay"/> 支付宝</span>
             <el-form-item label="应用ID">
               <el-input v-model="props.row.alipay.appId"></el-input>
@@ -46,6 +53,13 @@
                 <el-radio label="RSA2"></el-radio>
                 <el-radio label="RSA"></el-radio>
               </el-radio-group>
+            </el-form-item>
+            <el-form-item label="沙盒状态">
+              <el-switch
+                v-model="props.row.alipay.sandbox"
+                active-color="#13ce66"
+                inactive-color="#ff4949">
+              </el-switch>
             </el-form-item>
           </el-form>
         </template>

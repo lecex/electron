@@ -40,10 +40,18 @@
             <el-input v-model="config.alipay.appId"></el-input>
           </el-form-item>
           <el-form-item label="请输入私钥" prop="privateKey">
-            <el-input v-model="config.alipay.privateKey"></el-input>
+            <el-input 
+              v-model="config.alipay.privateKey"
+              type="textarea"
+              :rows="3"
+            ></el-input>
           </el-form-item>
           <el-form-item label="请输入支付宝公钥" prop="aliPayPublicKey">
-            <el-input v-model="config.alipay.aliPayPublicKey"></el-input>
+            <el-input 
+              v-model="config.alipay.aliPayPublicKey"
+              type="textarea"
+              :rows="3"
+            ></el-input>
           </el-form-item>
           <el-form-item label="选择签名方式" prop="signType">
             <el-radio-group v-model="config.alipay.signType">
