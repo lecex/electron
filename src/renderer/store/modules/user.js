@@ -9,6 +9,7 @@ const state = {
   token: getToken(),
   username: '',
   name: '匿名',
+  userId: '',
   loginTime: new Date(),
   avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
   roles: [],
@@ -32,6 +33,11 @@ const mutations = {
   SET_NAME: (state, name) => {
     if (name) {
       state.name = name
+    }
+  },
+  SET_USER_ID: (state, userId) => {
+    if (userId) {
+      state.userId = userId
     }
   },
   SET_LOGINTIME: (state, time) => {
@@ -78,9 +84,10 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
         // 用户相关信息设置
-        const { username, name, avatar } = data.user
+        const { username, name, avatar, id } = data.user
         commit('SET_NAME', name)
         commit('SET_USERNAME', username)
+        commit('SET_USER_ID', id)
         commit('SET_AVATAR', avatar)
         // 角色相关信息设置
         let roles = ['user']

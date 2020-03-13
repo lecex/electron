@@ -173,7 +173,6 @@ export default {
       Update(row).then(response => {
         this.dialogFormVisible = false
         this.dialogDisabled = false
-        this.getList()
         this.$message({
           message: '更新配置成功',
           type: 'success'

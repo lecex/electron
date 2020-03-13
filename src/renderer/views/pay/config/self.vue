@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <test-pay/>
     <el-tabs type="border-card">
       <el-tab-pane>
         <span slot="label"><svg-icon icon-class="wechat" class="wechat"/> 微信</span>
@@ -18,6 +19,13 @@
           </el-form-item>
           <el-form-item label="请输入子商家ID" prop="subMchId">
             <el-input v-model="config.wechat.subMchId"></el-input>
+          </el-form-item>
+          <el-form-item label="沙盒模式" prop="sandbox">
+            <el-switch
+              v-model="config.wechat.sandbox"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('wechatForm')">保存</el-button>
@@ -43,6 +51,13 @@
               <el-radio label="RSA"></el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="沙盒模式" prop="sandbox">
+            <el-switch
+              v-model="config.alipay.sandbox"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('alipayForm')">保存</el-button>
             <el-button @click="resetForm('alipayForm')">重置</el-button>
@@ -55,8 +70,10 @@
 
 <script>
 import { SelfUpdate, Info } from '@/api/pay-config'
+import TestPay from './components/testPay.vue'
 export default {
   name: 'ConfigSelf',
+  components: { TestPay },
   props: {},
   data() {
     return {
@@ -66,13 +83,15 @@ export default {
           mchId: '',
           apiKey: '',
           subAppId: '',
-          subMchId: ''
+          subMchId: '',
+          sandbox: false
         },
         alipay: {
           appId: '',
           privateKey: '',
           aliPayPublicKey: '',
-          signType: 'RSA2'
+          signType: 'RSA2',
+          sandbox: false
         }
       },
       wechatRules: {

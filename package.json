@@ -76,6 +76,7 @@
     "nprogress": "^0.2.0",
     "path-to-regexp": "2.4.0",
     "ping": "^0.2.2",
+    "uuid": "^7.0.2",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "3.0.6",

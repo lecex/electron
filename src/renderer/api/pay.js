@@ -1,13 +1,13 @@
 import request from '@/utils/request'
 
-export function Pay(data) {
+export function AopF2F(data) {
   return request({
     method: 'post',
     data: {
       service: 'pay-api',
-      method: 'Pays.Pay',
+      method: 'Pays.AopF2F',
       request: {
-        pay: data
+        order: data
       }
     }
   })
@@ -20,7 +20,7 @@ export function Refund(data) {
       service: 'pay-api',
       method: 'Pays.Refund',
       request: {
-        pay: data
+        order: data
       }
     }
   })
