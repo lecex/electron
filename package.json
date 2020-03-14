@@ -70,6 +70,7 @@
     "bcryptjs": "^2.4.3",
     "electron-store": "^5.1.0",
     "element-ui": "2.7.2",
+    "font-awesome": "^4.7.0",
     "getmac": "^1.4.6",
     "mousetrap": "^1.6.3",
     "normalize.css": "^8.0.1",

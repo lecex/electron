@@ -19,14 +19,15 @@
             <el-button @click="resetForm('order')">重置</el-button>
           </el-form-item>
         </el-form>
+        <pay ref="pay"/>
   </div>
 </template>
 
 <script>
-import { v4 as uuidv4 } from 'uuid'
-import { AopF2F } from '@/api/pay'
+import Pay from '@/components/Pay'
 export default {
   name: 'TestPay',
+  components: { Pay },
   props: {},
   data() {
     return {
@@ -51,22 +52,8 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.order.id = uuidv4() // 生成随机UUID
-          // this.order.id = '38e494c5-a47a-45d4-b68b-7522554472fe'
           this.order.totalAmount = this.totalAmount * 100// 换算成分
-          AopF2F(this.order).then(() => {
-            this.$message({
-              type: 'success',
-              message: '支付成功'
-            })
-          }).catch(error => {
-            console.log(error)
-
-            this.$message({
-              type: 'error' + error,
-              message: '支付失败'
-            })
-          })
+          this.$refs.pay.hander(this.order)
         } else {
           console.log('error submit!!')
           return false
