@@ -31,11 +31,11 @@ export default {
   props: {},
   data() {
     return {
-      totalAmount: 0,
+      totalAmount: 0.01,
       order: {
         id: '',
         storeId: this.$store.state.user.userId,
-        method: 'alipay',
+        method: 'wechat',
         authCode: '',
         title: '测试支付订单',
         totalAmount: 0,

@@ -5,7 +5,7 @@
       <el-tab-pane>
         <span slot="label"><svg-icon icon-class="wechat" class="wechat"/> 微信</span>
         <el-form :model="config.wechat" :rules="wechatRules" ref="wechatForm" label-width="150px">
-          <el-form-item label="请输入应用ID" prop="appId">
+          <el-form-item label="请输入公众账号ID" prop="appId">
             <el-input v-model="config.wechat.appId"></el-input>
           </el-form-item>
           <el-form-item label="请输入商家ID" prop="mchId">
@@ -14,7 +14,7 @@
           <el-form-item label="请输入API秘钥" prop="apiKey">
             <el-input v-model="config.wechat.apiKey"></el-input>
           </el-form-item>
-          <el-form-item label="请输入子应用ID" prop="subAppId">
+          <el-form-item label="请输入子公众账号ID" prop="subAppId">
             <el-input v-model="config.wechat.subAppId"></el-input>
           </el-form-item>
           <el-form-item label="请输入子商家ID" prop="subMchId">

@@ -4,13 +4,12 @@
     top="30vh"
     width="50%"
     class="pay-container"
-    :show-close="false"
   >
     <span v-show="begin" class="await"><i class="fa fa-spinner fa-pulse fa-fw"></i> 付款中</span>
     <span v-show="end" class="end">
       <svg-icon :icon-class="this.order.method" :class="this.order.method"/>
       <svg-icon :icon-class="info.type" :class="info.type"/><br>
-      {{ info.message }}
+      <span v-if="sleep">{{sleep}}</span> {{ info.message }} 
     </span>
   </el-dialog>
 </template>
@@ -32,14 +31,51 @@ export default {
       info: {
         type: 'success',
         message: ''
+      },
+      sleep: 0,
+      wechatError: {
+        SYSTEMERROR: '接口返回错误',
+        PARAM_ERROR: '参数错误',
+        ORDERPAID: '订单已支付',
+        NOAUTH: '商户无权限	',
+        AUTHCODEEXPIRE: '二维码已过期，请用户在微信上刷新后再试',
+        NOTENOUGH: '余额不足',
+        NOTSUPORTCARD: '不支持卡类型',
+        ORDERCLOSED: '订单已关闭',
+        ORDERREVERSED: '订单已撤销',
+        BANKERROR: '银行系统异常',
+        USERPAYING: '用户支付中，需要输入密码',
+        AUTH_CODE_ERROR: '授权码参数错误',
+        AUTH_CODE_INVALID: '授权码检验错误',
+        XML_FORMAT_ERROR: 'XML格式错误',
+        REQUIRE_POST_METHOD: '请使用post方法',
+        SIGNERROR: '签名错误',
+        LACK_PARAMS: '缺少参数',
+        NOT_UTF8: '编码格式错误',
+        BUYER_MISMATCH: '支付帐号错误',
+        APPID_NOT_EXIST: 'APPID不存在',
+        MCHID_NOT_EXIST: 'MCHID不存在',
+        OUT_TRADE_NO_USED: '商户订单号重复	',
+        APPID_MCHID_NOT_MATCH: 'appid和mch_id不匹配',
+        INVALID_REQUEST: '无效请求',
+        TRADE_ERROR: '交易错误'
       }
     }
   },
   computed: {
   },
+  mounted() {
+    setInterval(() => {
+      if (this.sleep > 0) {
+        this.sleep--
+      }
+    }, 1000)
+  },
   methods: {
     hander(order) {
       this.dialogVisible = true
+      order.id = uuidv4().replace(/\-/g, '') // 生成随机UUID
+      // order.id = '38e494c5a47a45d4b68b7522554472f8'
       this.order = order
       this.handerBegin()
       this.handerPay()
@@ -54,13 +90,13 @@ export default {
       this.end = true
     },
     handerPay() {
-      this.order.id = uuidv4() // 生成随机UUID
-      // this.order.id = '38e494c5-a47a-45d4-b68b-7522554472fe'
-      AopF2F(this.order).then(result => {
-        this.handerEnd()
-        this.info = {
-          type: 'success',
-          message: '支付成功'
+      AopF2F(this.order).then(response => {
+        if (response.data.valid) {
+          this.handerEnd()
+          this.info = {
+            type: 'success',
+            message: '支付成功'
+          }
         }
       }).catch(error => {
         this.handerEnd()
@@ -77,13 +113,37 @@ export default {
     wechatHander(error) {
       if (this.isJSON(error.response.data.detail)) {
         const detail = JSON.parse(error.response.data.detail)
-        switch (detail['return_code']) {
-          default:
+        if (detail['return_msg'] !== 'OK') {
+          this.info = {
+            type: 'error',
+            message: detail['return_msg']
+          }
+        }
+        switch (detail['err_code']) {
+          case 'USERPAYING':
             this.info = {
-              type: 'error',
-              message: detail['return_msg']
+              type: 'warning',
+              message: this.wechatError.USERPAYING
+            }
+            this.sleep = 10
+            setTimeout(() => {
+              this.handerPay()
+            }, this.sleep * 1000)// 等待10秒
+            break
+          default:
+            if (detail['err_code_des']) {
+              this.info = {
+                type: 'error',
+                message: detail['err_code_des']
+              }
             }
             break
+        }
+      } else {
+        const detail = error.response.data.detail
+        this.info = {
+          type: 'error',
+          message: detail
         }
       }
     },
@@ -96,6 +156,10 @@ export default {
               type: 'warning',
               message: '等待用户付款'
             }
+            this.sleep = 10
+            setTimeout(() => {
+              this.handerPay()
+            }, this.sleep * 1000)// 等待
             break
           default:
             this.info = {
@@ -114,6 +178,10 @@ export default {
             }
             break
           default:
+            this.info = {
+              type: 'error',
+              message: detail
+            }
             break
         }
       }
@@ -162,10 +230,10 @@ export default {
     color: #F56C6C;
   }
   .success{
-    color: #F56C6C;
+    color: #67C23A;
   }
   .warning{
-    color: #F56C6C;
+    color: #E6A23C;
   }
 }
 
