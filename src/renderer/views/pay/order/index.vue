@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <div class="filter-container" />
+    <div class="filter-container">
+    </div>
 
     <el-table
       v-loading="listLoading"
@@ -11,80 +12,63 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="权限ID" prop="id" align="center" width="80">
+      <el-table-column label="订单ID" prop="id" align="center" width="280">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="服务" prop="service" align="center" width="150">
+      <el-table-column label="支付方式" prop="method" align="center" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.service }}</span>
+          <span slot="label">
+            <span v-if="scope.row.method=='wechat'"><el-tag :class="scope.row.method"><svg-icon :icon-class="scope.row.method" :class="scope.row.method"/> 微信</el-tag></span>
+            <span v-if="scope.row.method=='alipay'"><el-tag :class="scope.row.method"><svg-icon :icon-class="scope.row.method" :class="scope.row.method"/> 支付宝</el-tag></span>
+          </span>
         </template>
       </el-table-column>
-      <el-table-column label="方法" prop="method" align="center" width="275">
+      <el-table-column label="订单名称" prop="title" align="center" min-width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.method }}</span>
+          <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="权限名称" prop="name" align="center" width="150">
+      <el-table-column label="订单金额" prop="title" align="center" min-width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span>{{ (scope.row.totalAmount/100).toFixed(2) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="权限描述" prop="description" align="center" min-width="230">
+      <el-table-column label="状态" prop="stauts" align="center" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
+          <el-tag v-if="!scope.row.stauts" type="warning"><svg-icon icon-class="warning" class="warning"/> 代付款</el-tag>
+          <el-tag v-if="scope.row.stauts" type="success"><svg-icon icon-class="success" class="success"/> 支付成功</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" prop="created_at" sortable="custom" align="center" width="180">
+      <el-table-column label="操作员" prop="operatorId" align="center" min-width="80">
         <template slot-scope="scope">
-          <span>{{ scope.row.created_at }}</span>
+          <span>{{ scope.row.operatorId }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{row}">
-          <el-button size="mini" type="danger" @click="handleDeleted(row)">
-            删除
-          </el-button>
+      <el-table-column label="终端" prop="terminalId" align="center" min-width="80">
+        <template slot-scope="scope">
+          <span>{{ scope.row.terminalId }}</span>
         </template>
-      </el-table-column> -->
+      </el-table-column>
+      <el-table-column label="创建时间" prop="created_at" sortable="custom" align="center" width="220">
+        <template slot-scope="scope">
+          <span>{{ scope.row.createdAt  }}</span>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="formData" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="服务" prop="service">
-          <el-input v-model="formData.service" />
-        </el-form-item>
-        <el-form-item label="方法" prop="method">
-          <el-input v-model="formData.method" />
-        </el-form-item>
-        <el-form-item label="权限名称" prop="name">
-          <el-input v-model="formData.name" />
-        </el-form-item>
-        <el-form-item label="权限描述" prop="description">
-          <el-input v-model="formData.description" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          取消
-        </el-button>
-        <el-button :disabled="dialogDisabled" type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          确定
-        </el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { List, Create, Delete, Update } from '@/api/permission'
+import { mapGetters } from 'vuex'
+import { List, Delete } from '@/api/pay-order'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 export default {
-  name: 'PermissionList',
+  name: 'ORderList',
   components: {
     Pagination
   },
@@ -92,62 +76,30 @@ export default {
   props: {},
   data() {
     return {
-      // list 列表
-      tableKey: 0,
       list: null,
       total: 0,
-      listLoading: true,
       listQuery: {
         page: 1,
-        limit: 100,
-        sort: 'created_at asc'
+        limit: 10,
+        where: '',
+        sort: 'created_at desc'
       },
-      // 弹窗控制
-      dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        update: '编辑权限',
-        create: '添加权限'
-      },
-      // form 数据
-      dialogDisabled: false, // 创建权限和更新权限按钮提示后禁用
-      formData: {
-        id: 0,
-        service: '',
-        method: '',
-        name: '',
-        description: ''
-      },
-      rules: {
-        service: [
-          { required: true, message: '请输入权限微服务', trigger: 'blur' },
-          { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }
-        ],
-        method: [
-          { required: true, message: '请输入权限方法', trigger: 'blur' },
-          { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }
-        ],
-        name: [
-          { required: true, message: '请输入角色名称', trigger: 'blur' },
-          { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }
-        ]
-      }
+      listLoading: true,
+      dialogFormVisible: false, // 窗口关闭
+      dialogDisabled: false // 窗口按钮引用
     }
+  },
+  computed: {
+    ...mapGetters([
+      'userId',
+      'roles'
+    ])
   },
   created() {
     this.getList()
   },
   mounted() {},
   methods: {
-    initFormData() {
-      this.formData = {
-        id: 0,
-        service: '',
-        method: '',
-        name: '',
-        description: ''
-      }
-    },
     sortChange(data) {
       if (data.prop) {
         this.listQuery.sort = (data.prop + ' ' + data.order).replace('ending', '')
@@ -155,35 +107,23 @@ export default {
       }
     },
     getList() {
+      if (this.roles.indexOf('root') === -1) {
+        this.listQuery.where = "store_id='" + this.userId + "'"
+      }
       this.listLoading = true
       List(this.listQuery).then(response => {
-        this.list = response.data.permissions
+        this.list = response.data.orders
         this.total = Number(response.data.total)
-
+        console.log(this.list, this.total)
         // Just to simulate the time of the request
         this.listLoading = false
       })
     },
-    handleCreate() {
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.dialogDisabled = false
-      this.initFormData()
+    handleUpdate() {
+
     },
-    // handleUpdate(row) {
-    //   this.dialogStatus = 'update'
-    //   this.dialogFormVisible = true
-    //   this.dialogDisabled = false
-    //   this.formData = {
-    //     id: row.id,
-    //     service: row.service,
-    //     method: row.method,
-    //     name: row.name,
-    //     description: row.description
-    //   }
-    // },
     handleDeleted(row) {
-      this.$confirm('此操作将永久删除该权限, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该用户支付配置, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -207,48 +147,28 @@ export default {
           })
         }
       })
-    },
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          this.dialogDisabled = true
-          Create(this.formData).then(response => {
-            if (valid) {
-              this.dialogFormVisible = false
-              this.getList()
-              this.$notify({
-                title: '添加成功',
-                message: '添加权限',
-                type: 'success',
-                duration: 2000
-              })
-            }
-          })
-        }
-      })
-    },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          this.dialogDisabled = true
-          Update(this.formData).then(response => {
-            if (valid) {
-              this.dialogFormVisible = false
-              this.getList()
-              this.$notify({
-                title: '更新成功',
-                message: '更新权限',
-                type: 'success',
-                duration: 2000
-              })
-            }
-          })
-        }
-      })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.el-form{
+  width: 460px;
+}
+.wechat{
+  color: #67C23A;
+}
+.alipay{
+  color: #409EFF;
+}
+.error{
+  color: #F56C6C;
+}
+.success{
+  color: #67C23A;
+}
+.warning{
+  color: #E6A23C;
+}
 </style>
