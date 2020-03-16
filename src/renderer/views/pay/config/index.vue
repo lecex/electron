@@ -69,6 +69,11 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="用户ID" prop="username" align="center" width="100">
+        <template slot-scope="scope">
+          <span>{{ scope.row.username }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="微信" prop="wechat" align="center" min-width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.wechat.appId }}</span>
