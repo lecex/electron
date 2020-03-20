@@ -12,9 +12,14 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="订单ID" prop="id" align="center" width="280">
+      <!-- <el-table-column label="ID" prop="id" align="center" width="300">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
+        </template>
+      </el-table-column> -->
+      <el-table-column label="订单编号" prop="id" align="center" width="220">
+        <template slot-scope="scope">
+          <span>{{ scope.row.orderNo }}</span>
         </template>
       </el-table-column>
       <el-table-column label="支付方式" prop="method" align="center" width="120">
