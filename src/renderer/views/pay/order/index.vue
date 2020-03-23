@@ -69,7 +69,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { List, Delete } from '@/api/pay-order'
+import { SelfList } from '@/api/pay-order'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 export default {
@@ -116,7 +116,7 @@ export default {
         this.listQuery.where = "store_id='" + this.userId + "'"
       }
       this.listLoading = true
-      List(this.listQuery).then(response => {
+      SelfList(this.listQuery).then(response => {
         this.list = response.data.orders
         this.total = Number(response.data.total)
         console.log(this.list, this.total)
@@ -126,32 +126,6 @@ export default {
     },
     handleUpdate() {
 
-    },
-    handleDeleted(row) {
-      this.$confirm('此操作将永久删除该用户支付配置, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.deleteData(row.id)
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-    },
-    deleteData(id) {
-      Delete({ id: id }).then(response => {
-        const valid = response.data.valid
-        if (valid) {
-          this.getList()
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-        }
-      })
     }
   }
 }
