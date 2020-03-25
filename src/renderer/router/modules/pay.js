@@ -13,6 +13,24 @@ const payRouter = {
   },
   children: [
     {
+      path: 'pay/dashboard',
+      component: () => import('@/views/pay/order/dashboard'),
+      name: 'PayDashboard',
+      meta: {
+        title: '收款统计',
+        permits: ['ui_pay_dashboard']
+      }
+    },
+    {
+      path: 'pay/order',
+      component: () => import('@/views/pay/order'),
+      name: 'PayOrder',
+      meta: {
+        title: '订单列表',
+        permits: ['ui_pay_order']
+      }
+    },
+    {
       path: 'pay/self',
       component: () => import('@/views/pay/config/self'),
       name: 'PaySelf',
@@ -28,24 +46,6 @@ const payRouter = {
       meta: {
         title: '配置列表',
         permits: ['ui_pay_config']
-      }
-    },
-    {
-      path: 'pay/order',
-      component: () => import('@/views/pay/order'),
-      name: 'PayOrder',
-      meta: {
-        title: '订单列表',
-        permits: ['ui_pay_order']
-      }
-    },
-    {
-      path: 'pay/dashboard',
-      component: () => import('@/views/pay/order/dashboard'),
-      name: 'PayDashboard',
-      meta: {
-        title: '收款统计',
-        permits: ['ui_pay_dashboard']
       }
     }
 
