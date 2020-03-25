@@ -1,6 +1,21 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
+      <el-form :model="query" :inline="true" ref="query" label-width="100px">
+          <el-form-item label="订单编号" prop="order_no">
+            <el-input v-model="query.order_no"></el-input>
+          </el-form-item>
+          <el-form-item label="操作员" prop="operator_id">
+            <el-input v-model="query.operator_id"></el-input>
+          </el-form-item>
+          <el-form-item label="终端" prop="terminal_id">
+            <el-input v-model="query.terminal_id"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="getList()">保存</el-button>
+            <el-button @click="resetForm('query')">重置</el-button>
+          </el-form-item>
+      </el-form>
     </div>
 
     <el-table
@@ -89,6 +104,11 @@ export default {
         where: '',
         sort: 'created_at desc'
       },
+      query: {
+        order_no: '',
+        operator_id: '',
+        terminal_id: ''
+      },
       listLoading: true,
       dialogFormVisible: false, // 窗口关闭
       dialogDisabled: false // 窗口按钮引用
@@ -112,29 +132,33 @@ export default {
       }
     },
     getList() {
-      if (this.roles.indexOf('root') === -1) {
-        this.listQuery.where = "store_id='" + this.userId + "'"
+      let where = ' true'
+      if (this.query.order_no) {
+        where = where + " And order_no like '%" + this.query.order_no + "%'"
       }
+      if (this.query.operator_id) {
+        where = where + " And operator_id = '" + this.query.operator_id + "'"
+      }
+      if (this.query.terminal_id) {
+        where = where + " And terminal_id = '" + this.query.terminal_id + "'"
+      }
+      this.listQuery.where = where
       this.listLoading = true
       SelfList(this.listQuery).then(response => {
         this.list = response.data.orders
         this.total = Number(response.data.total)
-        console.log(this.list, this.total)
         // Just to simulate the time of the request
         this.listLoading = false
       })
     },
-    handleUpdate() {
-
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.el-form{
-  width: 460px;
-}
 .wechat{
   color: #67C23A;
 }

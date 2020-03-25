@@ -74,8 +74,7 @@ export default {
   methods: {
     hander(order) {
       this.dialogVisible = true
-      order.id = uuidv4().replace(/\-/g, '') // 生成随机UUID
-      // order.id = '38e494c5a47a45d4b68b7522554472f8'
+      order.orderNo = uuidv4().replace(/\-/g, '') // 生成随机UUID
       this.order = order
       this.handerBegin()
       this.handerPay()

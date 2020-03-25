@@ -38,7 +38,17 @@ const payRouter = {
         title: '订单列表',
         permits: ['ui_pay_order']
       }
+    },
+    {
+      path: 'pay/dashboard',
+      component: () => import('@/views/pay/order/dashboard'),
+      name: 'PayDashboard',
+      meta: {
+        title: '收款统计',
+        permits: ['ui_pay_dashboard']
+      }
     }
+
   ]
 }
 export default payRouter

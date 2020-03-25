@@ -33,7 +33,7 @@ export default {
     return {
       totalAmount: 0.01,
       order: {
-        id: '',
+        orderNo: '',
         storeId: this.$store.state.user.userId,
         method: 'wechat',
         authCode: '',

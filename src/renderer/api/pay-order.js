@@ -1,5 +1,17 @@
 import request from '@/utils/request'
 
+export function SelfAmount(data) {
+  return request({
+    method: 'post',
+    data: {
+      'service': 'pay-api',
+      'method': 'Orders.SelfAmount',
+      'request': {
+        'list_query': data
+      }
+    }
+  })
+}
 export function SelfList(data) {
   return request({
     method: 'post',
