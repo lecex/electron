@@ -2,9 +2,9 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
-import path from 'path'
-const fs = require('fs')
-import { remote } from 'electron'
+// import path from 'path'
+// const fs = require('fs')
+// import { remote } from 'electron'
 
 /**
  * Parse the time to string
@@ -128,22 +128,22 @@ export function trim(str) {
  * @param {string} paths 支持扩展目录 自动创建扩展目录
  * @returns {Object}
  */
-export function exePath(paths = '') {
-  // 递归创建目录 同步方法
-  function mkdirsSync(dirname) {
-    if (fs.existsSync(dirname)) {
-      return true
-    } else {
-      if (mkdirsSync(path.dirname(dirname))) {
-        fs.mkdirSync(dirname)
-        return true
-      }
-    }
-  }
-  const dataPath = path.join(remote.app.getPath('exe'), '../', paths)
-  mkdirsSync(dataPath, 777)
-  return dataPath
-}
+// export function exePath(paths = '') {
+//   // 递归创建目录 同步方法
+//   function mkdirsSync(dirname) {
+//     if (fs.existsSync(dirname)) {
+//       return true
+//     } else {
+//       if (mkdirsSync(path.dirname(dirname))) {
+//         fs.mkdirSync(dirname)
+//         return true
+//       }
+//     }
+//   }
+//   const dataPath = path.join(remote.app.getPath('exe'), '../', paths)
+//   mkdirsSync(dataPath, 777)
+//   return dataPath
+// }
 /**
  * 数字前面自动补零
  * @param {int} num 数字

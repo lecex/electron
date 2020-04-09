@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-const ping = require('ping')
 /**
  * navigator 设备情况
  */
@@ -9,19 +8,6 @@ const ping = require('ping')
  */
 export function onLine() {
   return navigator.onLine
-}
-/**
- * isInternet 互联网状态
- * @returns {bool}
- */
-export async function isInternet() {
-  let status = false
-  await ping.promise.probe('114.114.114.114').then(() => {
-    status = true
-  }).catch(() => {
-    status = false
-  })
-  return status
 }
 
 /**

@@ -5,19 +5,19 @@
       <el-tab-pane>
         <span slot="label"><svg-icon icon-class="wechat" class="wechat"/> 微信</span>
         <el-form :model="config.wechat" :rules="wechatRules" ref="wechatForm" label-width="150px">
-          <el-form-item label="请输入公众账号ID" prop="appId">
+          <el-form-item label="公众账号APPID" prop="appId">
             <el-input v-model="config.wechat.appId"></el-input>
           </el-form-item>
-          <el-form-item label="请输入商家ID" prop="mchId">
+          <el-form-item label="商家APPID" prop="mchId">
             <el-input v-model="config.wechat.mchId"></el-input>
           </el-form-item>
-          <el-form-item label="请输入API秘钥" prop="apiKey">
+          <el-form-item label="API秘钥" prop="apiKey">
             <el-input v-model="config.wechat.apiKey"></el-input>
           </el-form-item>
-          <el-form-item label="请输入子公众账号ID" prop="subAppId">
+          <el-form-item label="子公众账号ID" prop="subAppId">
             <el-input v-model="config.wechat.subAppId"></el-input>
           </el-form-item>
-          <el-form-item label="请输入子商家ID" prop="subMchId">
+          <el-form-item label="子商家ID" prop="subMchId">
             <el-input v-model="config.wechat.subMchId"></el-input>
           </el-form-item>
           <el-form-item label="沙盒模式" prop="sandbox">
@@ -36,17 +36,17 @@
       <el-tab-pane>
         <span slot="label"><svg-icon icon-class="alipay" class="alipay"/> 支付宝</span>
         <el-form :model="config.alipay" :rules="alipayRules" ref="alipayForm" label-width="150px">
-          <el-form-item label="请输入应用ID" prop="appId">
+          <el-form-item label="应用ID" prop="appId">
             <el-input v-model="config.alipay.appId"></el-input>
           </el-form-item>
-          <el-form-item label="请输入私钥" prop="privateKey">
+          <el-form-item label="私钥" prop="privateKey">
             <el-input 
               v-model="config.alipay.privateKey"
               type="textarea"
               :rows="3"
             ></el-input>
           </el-form-item>
-          <el-form-item label="请输入支付宝公钥" prop="aliPayPublicKey">
+          <el-form-item label="支付宝公钥" prop="aliPayPublicKey">
             <el-input 
               v-model="config.alipay.aliPayPublicKey"
               type="textarea"
@@ -103,10 +103,10 @@ export default {
         }
       },
       wechatRules: {
-        appId: [{ required: true, message: '请输入应用ID', trigger: 'change' }],
-        mchId: [{ required: true, message: '请输入商家ID', trigger: 'change' }],
+        appId: [{ required: true, message: '请输入应用APPID', trigger: 'change' }],
+        mchId: [{ required: true, message: '请输入商家APPID', trigger: 'change' }],
         apiKey: [{ required: true, message: '请输入API秘钥', trigger: 'change' }],
-        subAppId: [{ required: true, message: '请输入子应用ID', trigger: 'change' }],
+        subAppId: [{ message: '请输入子应用ID', trigger: 'change' }],
         subMchId: [{ required: true, message: '请输入子商家ID', trigger: 'change' }]
       },
       alipayRules: {
