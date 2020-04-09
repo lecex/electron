@@ -12,7 +12,5 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
-  sidebarLogo: true,
-
-  baseURL: 'http://rpc1.xilewanggou.com/rpc'
+  sidebarLogo: true
 }

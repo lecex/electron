@@ -1,15 +1,13 @@
 import defaultSettings from '@/settings'
 import Store from '@/utils/electron-store'
 
-const { showSettings, fixedHeader, sidebarLogo, baseURL } = defaultSettings
+const { showSettings, fixedHeader, sidebarLogo } = defaultSettings
 
 const state = {
   showSettings: showSettings,
   fixedHeader: fixedHeader,
   isHeader: true,
-  sidebarLogo: sidebarLogo,
-  // 自定义开发
-  baseURL: baseURL // 主API地址
+  sidebarLogo: sidebarLogo
 }
 
 const mutations = {

@@ -1,12 +1,11 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
-import localStore from '@/utils/electron-store'
 import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: localStore.get('settings.baseURL'), // url = base url + request url
+  baseURL: process.env.BASE_URL, // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
   timeout: 20000, // request timeout
   error: true // 默认开启错误提示
@@ -16,8 +15,11 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     //  使用最新的服务器地址访问
-    if (store.getters.baseURL) {
-      config.baseURL = store.getters.baseURL
+    if (!config.baseURL) {
+      Message({
+        message: '请联系管理员配置软件API',
+        type: 'warning'
+      })
     }
     // do something before request is sent
     if (store.getters.token) {

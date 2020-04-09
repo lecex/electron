@@ -1,4 +1,4 @@
-import { onLine, isInternet, isServer } from '@/utils/healthy'
+import { onLine, isServer } from '@/utils/healthy'
 const state = {
   date: new Date(), // 修改数据date
   onLine: false,
@@ -11,7 +11,6 @@ const mutations = {
   SET_HEALTHY: async(state) => {
     state.onLine = onLine()
     state.isServer = await isServer()
-    state.isInternet = await isInternet()
   },
   SET_INTERVAL: (state, interval) => {
     state.interval = interval

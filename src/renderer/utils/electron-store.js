@@ -6,7 +6,7 @@
 // })
 const Store = {
   get(key) {
-    localStorage.getItem(key)
+    return localStorage.getItem(key)
   },
   set(key, value) {
     localStorage.setItem(key, value)
