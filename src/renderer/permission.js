@@ -8,23 +8,11 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login', '/install'] // no redirect whitelist
+const whiteList = ['/login'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
-  // 初始化安装程序路由相当
-  if (!store.state.settings.install) {
-    /* has no token */
-    if (whiteList.indexOf(to.path) !== -1 && to.path === '/install') {
-      // in the free login whitelist, go directly
-      next()
-    } else {
-      // other pages that do not have permission to access are redirected to the login page.
-      next(`/install?redirect=${to.path}`)
-      NProgress.done()
-    }
-  }
   // set page title
   document.title = getPageTitle(to.meta.title)
 

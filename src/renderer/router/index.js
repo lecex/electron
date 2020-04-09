@@ -36,11 +36,6 @@ import payRouter from './modules/pay'
  */
 export const constantRoutes = [
   {
-    path: '/install',
-    component: () => import('@/views/install/index'),
-    hidden: true
-  },
-  {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
