@@ -69,9 +69,9 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="用户ID" prop="username" align="center" width="100">
+      <el-table-column label="用户ID" prop="storeName" align="center" width="100">
         <template slot-scope="scope">
-          <span>{{ scope.row.username }}</span>
+          <span>{{ scope.row.storeName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="微信" prop="wechat" align="center" min-width="150">
@@ -94,16 +94,13 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" prop="created_at" sortable="custom" align="center" width="180">
+      <el-table-column label="创建时间" prop="created_at" sortable="custom" align="center" width="250">
         <template slot-scope="scope">
           <span>{{ scope.row.createdAt  }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button v-permit="['ui_config_update']" type="primary" size="mini" @click="handleUpdate(row)">
-            编辑
-          </el-button>
           <el-button v-permit="['ui_config_delete']" size="mini" type="danger" @click="handleDeleted(row)">
             删除
           </el-button>
@@ -160,7 +157,6 @@ export default {
         this.listLoading = false
       })
     },
-    handleUpdate() {},
     handleDeleted(row) {
       this.$confirm('此操作将永久删除该用户支付配置, 是否继续?', '提示', {
         confirmButtonText: '确定',
