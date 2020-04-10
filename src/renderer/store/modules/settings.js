@@ -1,11 +1,12 @@
 import defaultSettings from '@/settings'
 import Store from '@/utils/electron-store'
 
-const { showSettings, fixedHeader, sidebarLogo } = defaultSettings
+const { showSettings, fixedHeader, sidebarLogo, baseUrl } = defaultSettings
 
 const state = {
   showSettings: showSettings,
   fixedHeader: fixedHeader,
+  baseUrl: baseUrl,
   isHeader: true,
   sidebarLogo: sidebarLogo
 }
