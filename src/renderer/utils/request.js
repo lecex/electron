@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: store.settings.baseUrl, // url = base url + request url
+  baseURL: store.state.settings.baseUrl, // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
   timeout: 20000, // request timeout
   error: true // 默认开启错误提示
