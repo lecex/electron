@@ -8,8 +8,7 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           @change="getList"
-        >
-        </el-date-picker>
+        />
         <panel-group
           :order="order"
           :wechat="wechat"

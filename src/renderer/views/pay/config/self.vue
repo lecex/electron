@@ -59,6 +59,16 @@
               <el-radio label="RSA"></el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="商家授权Token" prop="AppAuthToken">
+            <el-input 
+              v-model="config.alipay.AppAuthToken"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="服务商ID" prop="sysServiceProviderId">
+            <el-input 
+              v-model="config.alipay.sysServiceProviderId"
+            ></el-input>
+          </el-form-item>
           <el-form-item label="沙盒模式" prop="sandbox">
             <el-switch
               v-model="config.alipay.sandbox"

@@ -2,8 +2,20 @@
   <div class="app-container">
     <div class="filter-container">
       <el-form :model="query" :inline="true" ref="query" label-width="100px">
+          <el-form-item label="时间" prop="date">
+            <el-date-picker
+              v-model="query.date"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            />
+          </el-form-item>
           <el-form-item label="订单编号" prop="order_no">
             <el-input v-model="query.order_no"></el-input>
+          </el-form-item>
+          <el-form-item label="金额" prop="total_amount">
+            <el-input v-model="query.total_amount"></el-input>
           </el-form-item>
           <el-form-item label="操作员" prop="operator_id">
             <el-input v-model="query.operator_id"></el-input>
@@ -12,7 +24,7 @@
             <el-input v-model="query.terminal_id"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="getList()">保存</el-button>
+            <el-button type="primary" @click="getList()">查询</el-button>
             <el-button @click="resetForm('query')">重置</el-button>
           </el-form-item>
       </el-form>
@@ -57,8 +69,9 @@
       </el-table-column>
       <el-table-column label="状态" prop="stauts" align="center" width="120">
         <template slot-scope="scope">
-          <el-tag v-if="!scope.row.stauts" type="warning"><svg-icon icon-class="warning" class="warning"/> 代付款</el-tag>
-          <el-tag v-if="scope.row.stauts" type="success"><svg-icon icon-class="success" class="success"/> 支付成功</el-tag>
+          <el-tag v-if="scope.row.stauts===-1" type="warning"><svg-icon icon-class="warning" class="warning"/> 订单关闭</el-tag>
+          <el-tag v-if="scope.row.stauts===0" type="warning"><svg-icon icon-class="warning" class="warning"/> 待付款</el-tag>
+          <el-tag v-if="scope.row.stauts===1" type="success"><svg-icon icon-class="success" class="success"/> 支付成功</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作员" prop="operatorId" align="center" min-width="80">
@@ -84,6 +97,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { parseTime } from '@/utils'
 import { SelfList } from '@/api/pay-order'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -105,6 +119,11 @@ export default {
         sort: 'created_at desc'
       },
       query: {
+        date: [
+          new Date(new Date(new Date().toLocaleDateString()).getTime() - 24 * 60 * 60 * 1000),
+          new Date(new Date(new Date().toLocaleDateString()).getTime())
+        ],
+        total_amount: '',
         order_no: '',
         operator_id: '',
         terminal_id: ''
@@ -133,6 +152,12 @@ export default {
     },
     getList() {
       let where = ' true'
+      if (this.query.date) {
+        where = where + " And created_at >= '" + parseTime(this.query.date[0]) + "' And created_at < '" + parseTime(this.query.date[1]) + "'"
+      }
+      if (this.query.total_amount) {
+        where = where + ' And total_amount =' + this.query.total_amount * 100
+      }
       if (this.query.order_no) {
         where = where + " And order_no like '%" + this.query.order_no + "%'"
       }
