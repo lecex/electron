@@ -14,5 +14,6 @@ module.exports = {
    */
   sidebarLogo: true,
 
-  baseUrl: 'http://rpc1.xilewanggou.com/rpc'
+  // baseUrl: 'http://rpc.xilewanggou.com'
+  baseUrl: 'http://127.0.0.1:8080'
 }

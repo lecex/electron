@@ -2,74 +2,57 @@ import request from '@/utils/request'
 
 export function All() {
   return request({
+    url: '/user-api/permissions/all',
     method: 'post',
     data: {
-      'service': 'user-api',
-      'method': 'Permissions.All',
-      'request': {}
     }
   })
 }
 
 export function List(data) {
   return request({
+    url: '/user-api/permissions/list',
     method: 'post',
     data: {
-      'service': 'user-api',
-      'method': 'Permissions.List',
-      'request': {
-        'list_query': data
-      }
+      'list_query': data
     }
   })
 }
 
 export function Get(data) {
   return request({
+    url: '/user-api/permissions/get',
     method: 'post',
     data: {
-      'service': 'user-api',
-      'method': 'Permissions.Get',
-      'request': {
-        'permission': data
-      }
+      'permission': data
     }
   })
 }
 
 export function Create(data) {
   return request({
+    url: '/user-api/permissions/create',
     method: 'post',
     data: {
-      'service': 'user-api',
-      'method': 'Permissions.Create',
-      'request': {
-        'permission': data
-      }
+      'permission': data
     }
   })
 }
 export function Update(data) {
   return request({
+    url: '/user-api/permissions/update',
     method: 'post',
     data: {
-      'service': 'user-api',
-      'method': 'Permissions.Update',
-      'request': {
-        'permission': data
-      }
+      'permission': data
     }
   })
 }
 export function Delete(data) {
   return request({
+    url: '/user-api/permissions/delete',
     method: 'post',
     data: {
-      'service': 'user-api',
-      'method': 'Permissions.Delete',
-      'request': {
-        'permission': data
-      }
+      'permission': data
     }
   })
 }

@@ -149,6 +149,7 @@ export default {
               type: 'success',
               message: '支付信息配置成功!'
             })
+            this.getInfo()
           }).catch(error => {
             this.$message({
               type: 'error',

@@ -2,24 +2,19 @@ import request from '@/utils/request'
 
 export function Login(data) {
   return request({
+    url: '/user-api/auth/auth',
     method: 'post',
     data: {
-      service: 'user-api',
-      method: 'Auth.Auth',
-      request: {
-        user: data
-      }
+      user: data
     }
   })
 }
 
 export function Logout() {
   return request({
+    url: '/user-api/auth/logout',
     method: 'post',
     data: {
-      service: 'user-api',
-      method: 'Auth.Logout',
-      request: {}
     }
   })
 }

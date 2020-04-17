@@ -2,87 +2,67 @@ import request from '@/utils/request'
 
 export function Exist(data) {
   return request({
+    url: '/user-api/users/exist',
     method: 'post',
     data: {
-      'service': 'user-api',
-      'method': 'Users.Exist',
-      'request': {
-        'user': data
-      }
+      'user': data
     }
   })
 }
 
 export function Info() {
   return request({
+    url: '/user-api/users/info',
     method: 'post',
     data: {
-      service: 'user-api',
-      method: 'Users.Info',
-      request: {}
     }
   })
 }
 
 export function List(data) {
   return request({
+    url: '/user-api/users/list',
     method: 'post',
     data: {
-      'service': 'user-api',
-      'method': 'Users.List',
-      'request': {
-        'list_query': data
-      }
+      'list_query': data
     }
   })
 }
 
 export function Get(data) {
   return request({
+    url: '/user-api/users/get',
     method: 'post',
     data: {
-      'service': 'user-api',
-      'method': 'Users.Get',
-      'request': {
-        'user': data
-      }
+      'user': data
     }
   })
 }
 
 export function Create(data) {
   return request({
+    url: '/user-api/users/create',
     method: 'post',
     data: {
-      'service': 'user-api',
-      'method': 'Users.Create',
-      'request': {
-        'user': data
-      }
+      'user': data
     }
   })
 }
 export function Update(data) {
   return request({
+    url: '/user-api/users/update',
     method: 'post',
     data: {
-      'service': 'user-api',
-      'method': 'Users.Update',
-      'request': {
-        'user': data
-      }
+      'user': data
     }
   })
 }
 export function Delete(data) {
   return request({
+    url: '/user-api/users/delete',
     method: 'post',
     data: {
-      'service': 'user-api',
-      'method': 'Users.Delete',
-      'request': {
-        'user': data
-      }
+      'user': data
     }
   })
 }

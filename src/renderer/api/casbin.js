@@ -2,45 +2,33 @@ import request from '@/utils/request'
 
 export function GetRoles(data) {
   return request({
+    url: '/user-api/casbin/getRoles',
     method: 'post',
-    data: {
-      'service': 'user-api',
-      'method': 'Casbin.GetRoles',
-      'request': data
-    }
+    data: data
   })
 }
 
 export function UpdateRoles(data) {
   return request({
+    url: '/user-api/casbin/updateRoles',
     method: 'post',
-    data: {
-      'service': 'user-api',
-      'method': 'Casbin.UpdateRoles',
-      'request': data
-    }
+    data: data
   })
 }
 
 export function GetPermissions(data) {
   return request({
+    url: '/user-api/casbin/getPermissions',
     method: 'post',
-    data: {
-      'service': 'user-api',
-      'method': 'Casbin.GetPermissions',
-      'request': data
-    }
+    data: data
   })
 }
 
 export function UpdatePermissions(data) {
   return request({
+    url: '/user-api/casbin/updatePermissions',
     method: 'post',
-    data: {
-      'service': 'user-api',
-      'method': 'Casbin.UpdatePermissions',
-      'request': data
-    }
+    data: data
   })
 }
 

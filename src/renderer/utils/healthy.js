@@ -19,11 +19,9 @@ export async function isServer(url = null) {
   request.defaults.error = false // 关闭错误提示
   var status = false
   await request({
+    url: '/user-api/health/health',
     method: 'post',
     data: {
-      service: 'user-api',
-      method: 'Health.Health',
-      request: {}
     }
   }).then(() => {
     status = true

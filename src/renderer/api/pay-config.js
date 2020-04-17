@@ -2,88 +2,67 @@ import request from '@/utils/request'
 
 export function SelfUpdate(data) {
   return request({
+    url: '/pay-api/configs/selfUpdate',
     method: 'post',
     data: {
-      'service': 'pay-api',
-      'method': 'Configs.SelfUpdate',
-      'request': {
-        'config': data
-      }
+      'config': data
     }
   })
 }
 
 export function Info() {
   return request({
+    url: '/pay-api/configs/info',
     method: 'post',
     data: {
-      'service': 'pay-api',
-      'method': 'Configs.Info',
-      'request': {
-      }
     }
   })
 }
 
 export function List(data) {
   return request({
+    url: '/pay-api/configs/list',
     method: 'post',
     data: {
-      'service': 'pay-api',
-      'method': 'Configs.List',
-      'request': {
-        'list_query': data
-      }
+      'list_query': data
     }
   })
 }
 
 export function Get(data) {
   return request({
+    url: '/pay-api/configs/get',
     method: 'post',
     data: {
-      'service': 'pay-api',
-      'method': 'Configs.Get',
-      'request': {
-        'config': data
-      }
+      'config': data
     }
   })
 }
 
 export function Create(data) {
   return request({
+    url: '/pay-api/configs/create',
     method: 'post',
     data: {
-      'service': 'pay-api',
-      'method': 'Configs.Create',
-      'request': {
-        'config': data
-      }
+      'config': data
     }
   })
 }
 export function Update(data) {
   return request({
+    url: '/pay-api/configs/update',
     method: 'post',
     data: {
-      'service': 'pay-api',
-      'method': 'Configs.Update',
-      'request': {
-        'config': data
-      }
+      'config': data
     }
   })
 }
 export function Delete(data) {
   return request({
+    url: '/pay-api/configs/delete',
     method: 'post',
     data: {
-      'service': 'pay-api',
-      'method': 'Configs.Delete',
-      'request': {
-        'config': data
-      }
+      'config': data
     }
   })
 }
