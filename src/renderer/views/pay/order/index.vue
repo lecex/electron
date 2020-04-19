@@ -70,7 +70,7 @@
       <el-table-column label="状态" prop="stauts" align="center" width="120">
         <template slot-scope="scope">
           <el-tag v-if="Number(scope.row.stauts)===-1" type="warning"><svg-icon icon-class="warning" class="warning"/> 订单关闭</el-tag>
-          <el-tag v-if="Number(scope.row.stauts)===0" type="warning"><svg-icon icon-class="warning" class="warning"/> 待付款</el-tag>
+          <el-tag v-if="Number(scope.row.stauts)===0||!scope.row.stauts" type="warning"><svg-icon icon-class="warning" class="warning"/> 待付款</el-tag>
           <el-tag v-if="Number(scope.row.stauts)===1" type="success"><svg-icon icon-class="success" class="success"/> 支付成功</el-tag>
         </template>
       </el-table-column>
