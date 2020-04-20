@@ -109,6 +109,8 @@ export default {
           privateKey: '',
           aliPayPublicKey: '',
           signType: 'RSA2',
+          AppAuthToken: '',
+          sysServiceProviderId: '',
           sandbox: false
         }
       },
