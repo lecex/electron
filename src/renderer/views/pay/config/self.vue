@@ -59,9 +59,9 @@
               <el-radio label="RSA"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="商家授权Token" prop="AppAuthToken">
+          <el-form-item label="商家授权Token" prop="appAuthToken">
             <el-input 
-              v-model="config.alipay.AppAuthToken"
+              v-model="config.alipay.appAuthToken"
             ></el-input>
           </el-form-item>
           <el-form-item label="服务商ID" prop="sysServiceProviderId">
@@ -109,7 +109,7 @@ export default {
           privateKey: '',
           aliPayPublicKey: '',
           signType: 'RSA2',
-          AppAuthToken: '',
+          appAuthToken: '',
           sysServiceProviderId: '',
           sandbox: false
         }
