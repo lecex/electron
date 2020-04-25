@@ -89,6 +89,13 @@
           <span>{{ scope.row.createdAt  }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+        <template slot-scope="{row}">
+          <el-button size="mini" type="primary" @click="handerPayQuery(row)">
+            支付查询
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
@@ -101,6 +108,8 @@ import { parseTime } from '@/utils'
 import { SelfList } from '@/api/pay-order'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import { Query } from '@/api/pay'
+import errorPay from '@/utils/error-pay'
 export default {
   name: 'ORderList',
   components: {
@@ -178,6 +187,32 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
+    },
+    handerPayQuery(order) {
+      Query({
+        orderNo: order.orderNo,
+        storeId: order.storeId
+      }).then(response => { // 远程支付开始
+        if (response.data.valid) {
+          this.$message({
+            type: 'success',
+            title: '支付成功',
+            message: '付款成功'
+          })
+          this.getList()
+        }
+      }).catch(error => {
+        let err = errorPay.hander(error, order.method)
+        if (err === 'USERPAYING') {
+          err = '等待用户付款中'
+        }
+        this.$message({
+          type: 'error',
+          title: '支付失败',
+          message: err
+        })
+        this.getList()
+      })
     }
   }
 }

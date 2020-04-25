@@ -15,8 +15,9 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from 'uuid'
-import { AopF2F } from '@/api/pay'
+import { parseTime } from '@/utils/index'
+import { AopF2F, Query } from '@/api/pay'
+import errorPay from '@/utils/error-pay'
 // 前俯后仰 新
 export default {
   name: 'Pay',
@@ -74,7 +75,7 @@ export default {
   methods: {
     hander(order) {
       this.dialogVisible = true
-      order.orderNo = uuidv4().replace(/\-/g, '') // 生成随机UUID
+      order.orderNo = parseTime(new Date(), '{y}{m}{d}{h}{i}{s}{n}')// 生成随机UUID
       this.order = order
       this.handerBegin()
       this.handerPay()
@@ -97,93 +98,43 @@ export default {
             message: '支付成功'
           }
         }
-      }).catch(error => {
+      }).catch(() => {
         this.handerEnd()
-        switch (this.order.method) {
-          case 'alipay':
-            this.alipayHander(error)
-            break
-          case 'wechat':
-            this.wechatHander(error)
-            break
-        }
+        this.handerPayQuery()
       })
     },
-    wechatHander(error) {
-      if (this.isJSON(error.response.data.detail)) {
-        const detail = JSON.parse(error.response.data.detail)
-        if (detail['return_msg'] !== 'OK') {
+    handerPayQuery() {
+      this.info = {
+        type: 'warning',
+        message: '支付查询中'
+      }
+      Query(this.order).then(response => {
+        if (response.data.valid) {
+          this.handerEnd()
           this.info = {
-            type: 'error',
-            message: detail['return_msg']
+            type: 'success',
+            message: '支付成功'
           }
         }
-        switch (detail['err_code']) {
-          case 'USERPAYING':
-            this.info = {
-              type: 'warning',
-              message: this.wechatError.USERPAYING
-            }
-            this.sleep = 10
-            setTimeout(() => {
-              this.handerPay()
-            }, this.sleep * 1000)// 等待10秒
-            break
-          default:
-            if (detail['err_code_des']) {
-              this.info = {
-                type: 'error',
-                message: detail['err_code_des']
-              }
-            }
-            break
+      }).catch(error => {
+        this.handerEnd()
+        const err = errorPay.hander(error, this.order.method)
+        if (err === 'USERPAYING') {
+          this.info = {
+            type: 'warning',
+            message: '等待用户付款中'
+          }
+          this.sleep = 7
+          setTimeout(() => {
+            this.handerPayQuery()
+          }, this.sleep * 1000)// 等待10秒
+        } else {
+          this.info = {
+            type: 'error',
+            message: err
+          }
         }
-      } else {
-        const detail = error.response.data.detail
-        this.info = {
-          type: 'error',
-          message: detail
-        }
-      }
-    },
-    alipayHander(error) {
-      if (this.isJSON(error.response.data.detail)) {
-        const detail = JSON.parse(error.response.data.detail)
-        switch (detail['code']) {
-          case '10003':
-            this.info = {
-              type: 'warning',
-              message: '等待用户付款'
-            }
-            this.sleep = 10
-            setTimeout(() => {
-              this.handerPay()
-            }, this.sleep * 1000)// 等待
-            break
-          default:
-            this.info = {
-              type: 'error',
-              message: detail['sub_msg']
-            }
-            break
-        }
-      } else {
-        const detail = error.response.data.detail
-        switch (detail) {
-          case 'auth_code : cannot be empty':
-            this.info = {
-              type: 'error',
-              message: '付款码不允许为空'
-            }
-            break
-          default:
-            this.info = {
-              type: 'error',
-              message: detail
-            }
-            break
-        }
-      }
+      })
     },
     isJSON(str) {
       if (typeof str === 'string') {
