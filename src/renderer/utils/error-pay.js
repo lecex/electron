@@ -18,8 +18,6 @@ const errorPay = {
   alipay(detail) {
     if (this.isJSON(detail)) {
       detail = JSON.parse(detail)
-      console.log(detail)
-
       if (detail['trade_status'] === 'WAIT_BUYER_PAY') {
         this.error = 'USERPAYING'
         return
