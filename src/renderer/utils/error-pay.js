@@ -60,10 +60,10 @@ const errorPay = {
         this.error = 'USERPAYING'
         return
       }
-      // if (detail.hasOwnProperty('trade_state')) {
-      //   this.error = detail['trade_state_desc']
-      //   return
-      // }
+      if (detail.hasOwnProperty('trade_state')) {
+        this.error = detail['trade_state_desc']
+        return
+      }
       switch (detail['err_code']) {
         case 'USERPAYING':
           this.error = 'USERPAYING'
