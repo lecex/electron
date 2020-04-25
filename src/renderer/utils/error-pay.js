@@ -18,8 +18,18 @@ const errorPay = {
   alipay(detail) {
     if (this.isJSON(detail)) {
       detail = JSON.parse(detail)
+      console.log(detail)
+
       if (detail['trade_status'] === 'WAIT_BUYER_PAY') {
         this.error = 'USERPAYING'
+        return
+      }
+      if (detail['trade_status'] === 'TRADE_CLOSED') {
+        this.error = '未付款交易超时关闭，或支付完成后全额退'
+        return
+      }
+      if (detail['trade_status'] === 'TRADE_FINISHED') {
+        this.error = '交易结束，不可退款'
         return
       }
       switch (detail['code']) {

@@ -98,9 +98,32 @@ export default {
             message: '支付成功'
           }
         }
-      }).catch(() => {
+      }).catch((error) => {
         this.handerEnd()
-        this.handerPayQuery()
+        if (error.message.indexOf('timeout of') !== -1) {
+          this.info = {
+            type: 'warning',
+            message: '支付超时查询支付中'
+          }
+          this.handerPayQuery()
+        } else {
+          const err = errorPay.hander(error, this.order.method)
+          if (err === 'USERPAYING') {
+            this.info = {
+              type: 'warning',
+              message: '等待用户付款中'
+            }
+            this.sleep = 7
+            setTimeout(() => {
+              this.handerPayQuery()
+            }, this.sleep * 1000)// 等待10秒
+          } else {
+            this.info = {
+              type: 'error',
+              message: err
+            }
+          }
+        }
       })
     },
     handerPayQuery() {
@@ -118,20 +141,30 @@ export default {
         }
       }).catch(error => {
         this.handerEnd()
-        const err = errorPay.hander(error, this.order.method)
-        if (err === 'USERPAYING') {
+        if (error.message.indexOf('timeout of') !== -1) {
           this.info = {
             type: 'warning',
-            message: '等待用户付款中'
+            message: '超时查询支付中'
           }
-          this.sleep = 7
           setTimeout(() => {
             this.handerPayQuery()
           }, this.sleep * 1000)// 等待10秒
         } else {
-          this.info = {
-            type: 'error',
-            message: err
+          const err = errorPay.hander(error, this.order.method)
+          if (err === 'USERPAYING') {
+            this.info = {
+              type: 'warning',
+              message: '等待用户付款中'
+            }
+            this.sleep = 7
+            setTimeout(() => {
+              this.handerPayQuery()
+            }, this.sleep * 1000)// 等待10秒
+          } else {
+            this.info = {
+              type: 'error',
+              message: err
+            }
           }
         }
       })
