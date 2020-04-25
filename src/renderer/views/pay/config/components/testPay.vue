@@ -34,7 +34,9 @@ export default {
       totalAmount: 0.01,
       order: {
         orderNo: '',
-        storeId: this.$store.state.user.userId,
+        // storeId: this.$store.state.user.userId,
+        storeName: this.$store.state.user.username,
+        // storeName: 'admin',
         method: 'wechat',
         authCode: '',
         title: '测试支付订单',
