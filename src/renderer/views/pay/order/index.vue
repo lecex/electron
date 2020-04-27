@@ -11,6 +11,16 @@
               end-placeholder="结束日期"
             />
           </el-form-item>
+          <el-form-item label="支付方式" prop="method">
+            <el-select v-model="query.method" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="订单编号" prop="order_no">
             <el-input v-model="query.order_no"></el-input>
           </el-form-item>
@@ -132,6 +142,7 @@ export default {
           new Date(new Date(new Date().toLocaleDateString()).getTime() - 24 * 60 * 60 * 1000),
           new Date(new Date(new Date().toLocaleDateString()).getTime())
         ],
+        query: '',
         total_amount: '',
         order_no: '',
         operator_id: '',
@@ -139,7 +150,16 @@ export default {
       },
       listLoading: true,
       dialogFormVisible: false, // 窗口关闭
-      dialogDisabled: false // 窗口按钮引用
+      dialogDisabled: false, // 窗口按钮引用
+      options: [
+        {
+          value: 'wechat',
+          label: '微信'
+        }, {
+          value: 'alipay',
+          label: '支付宝'
+        }
+      ]
     }
   },
   computed: {
@@ -163,6 +183,9 @@ export default {
       let where = ' true'
       if (this.query.date) {
         where = where + " And created_at >= '" + parseTime(this.query.date[0]) + "' And created_at < '" + parseTime(this.query.date[1]) + "'"
+      }
+      if (this.query.method) {
+        where = where + " And method = '" + this.query.method + "'"
       }
       if (this.query.total_amount) {
         where = where + ' And total_amount =' + this.query.total_amount * 100
