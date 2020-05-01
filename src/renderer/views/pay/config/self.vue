@@ -27,6 +27,11 @@
               inactive-color="#ff4949">
             </el-switch>
           </el-form-item>
+          <el-form-item label="手续费" prop="fee">
+            <el-input v-model="wechatFee" >
+              <template slot="append">%</template>
+            </el-input>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('wechatForm')">保存</el-button>
             <el-button @click="resetForm('wechatForm')">重置</el-button>
@@ -76,6 +81,11 @@
               inactive-color="#ff4949">
             </el-switch>
           </el-form-item>
+          <el-form-item label="手续费" prop="fee">
+            <el-input v-model="alipayFee" >
+              <template slot="append">%</template>
+            </el-input>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('alipayForm')">保存</el-button>
             <el-button @click="resetForm('alipayForm')">重置</el-button>
@@ -102,6 +112,7 @@ export default {
           apiKey: '',
           subAppId: '',
           subMchId: '',
+          fee: 0,
           sandbox: false
         },
         alipay: {
@@ -111,6 +122,7 @@ export default {
           signType: 'RSA2',
           appAuthToken: '',
           sysServiceProviderId: '',
+          fee: 0,
           sandbox: false
         }
       },
@@ -126,7 +138,9 @@ export default {
         privateKey: [{ required: true, message: '请输入私钥', trigger: 'change' }],
         aliPayPublicKey: [{ required: true, message: '请输入支付宝公钥', trigger: 'change' }],
         signType: [{ required: true, message: '选择签名方式', trigger: 'change' }]
-      }
+      },
+      wechatFee: '',
+      alipayFee: ''
     }
   },
   created() {
@@ -139,12 +153,16 @@ export default {
       Info().then(response => {
         if (response.data.config) {
           this.config = response.data.config
+          this.wechatFee = this.config.wechat.fee ? (this.config.wechat.fee / 100).toFixed(2) : '' // 手续费转换为百分之一
+          this.alipayFee = this.config.alipay.fee ? (this.config.alipay.fee / 100).toFixed(2) : ''// 手续费转换为百分之一
         }
       })
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.config.wechat.fee = Math.round(this.wechatFee * 100) // 手续费转换万分之一
+          this.config.alipay.fee = Math.round(this.alipayFee * 100) // 手续费转换万分之一
           this.config.stauts = true
           SelfUpdate(this.config).then(response => {
             this.$message({

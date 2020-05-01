@@ -119,7 +119,7 @@ import { SelfList } from '@/api/pay-order'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { Query } from '@/api/pay'
-import errorPay from '@/utils/error-pay'
+import utilsPay from '@/utils/pay'
 export default {
   name: 'ORderList',
   components: {
@@ -216,25 +216,36 @@ export default {
         orderNo: order.orderNo,
         storeId: order.storeId
       }).then(response => { // 远程支付开始
-        if (response.data.valid) {
+        utilsPay.hander(response.data, order.method)
+        if (utilsPay.valid) {
           this.$message({
             type: 'success',
             title: '支付成功',
             message: '付款成功'
           })
           this.getList()
+        } else {
+          if (utilsPay.error.code === 'USERPAYING') {
+            this.$notify({
+              type: 'warning',
+              title: '等待用户付款中',
+              message: utilsPay.error.detail
+            })
+          } else {
+            this.$notify({
+              type: 'error',
+              title: '未支付',
+              message: utilsPay.error.detail
+            })
+          }
         }
       }).catch(error => {
-        let err = errorPay.hander(error, order.method)
-        if (err === 'USERPAYING') {
-          err = '等待用户付款中'
-        }
-        this.$message({
+        const detail = error.response.data.detail
+        this.$notify({
           type: 'error',
           title: '支付失败',
-          message: err
+          message: detail
         })
-        this.getList()
       })
     }
   }

@@ -17,7 +17,7 @@
 <script>
 import { parseTime } from '@/utils/index'
 import { AopF2F, Query } from '@/api/pay'
-import errorPay from '@/utils/error-pay'
+import utilsPay from '@/utils/pay'
 // 前俯后仰 新
 export default {
   name: 'Pay',
@@ -91,11 +91,28 @@ export default {
     },
     handerPay() {
       AopF2F(this.order).then(response => {
-        if (response.data.valid) {
-          this.handerEnd()
+        this.handerEnd()
+        utilsPay.hander(response.data, this.order.method)
+        if (utilsPay.valid) {
           this.info = {
             type: 'success',
             message: '支付成功'
+          }
+        } else {
+          if (utilsPay.error.code === 'USERPAYING') {
+            this.info = {
+              type: 'warning',
+              message: '等待用户付款中'
+            }
+            this.sleep = 7
+            setTimeout(() => {
+              this.handerPayQuery()
+            }, this.sleep * 1000)// 等待10秒
+          } else {
+            this.info = {
+              type: 'error',
+              message: utilsPay.error.detail
+            }
           }
         }
       }).catch((error) => {
@@ -107,22 +124,12 @@ export default {
           }
           this.handerPayQuery()
         } else {
-          const err = errorPay.hander(error, this.order.method)
-          if (err === 'USERPAYING') {
-            this.info = {
-              type: 'warning',
-              message: '等待用户付款中'
-            }
-            this.sleep = 7
-            setTimeout(() => {
-              this.handerPayQuery()
-            }, this.sleep * 1000)// 等待10秒
-          } else {
-            this.info = {
-              type: 'error',
-              message: err
-            }
-          }
+          const detail = error.response.data.detail
+          this.$notify({
+            type: 'error',
+            title: '支付失败',
+            message: detail
+          })
         }
       })
     },
@@ -132,26 +139,15 @@ export default {
         message: '支付查询中'
       }
       Query(this.order).then(response => {
-        if (response.data.valid) {
-          this.handerEnd()
+        this.handerEnd()
+        utilsPay.hander(response.data, this.order.method)
+        if (utilsPay.valid) {
           this.info = {
             type: 'success',
             message: '支付成功'
           }
-        }
-      }).catch(error => {
-        this.handerEnd()
-        if (error.message.indexOf('timeout of') !== -1) {
-          this.info = {
-            type: 'warning',
-            message: '超时查询支付中'
-          }
-          setTimeout(() => {
-            this.handerPayQuery()
-          }, this.sleep * 1000)// 等待10秒
         } else {
-          const err = errorPay.hander(error, this.order.method)
-          if (err === 'USERPAYING') {
+          if (utilsPay.error.code === 'USERPAYING') {
             this.info = {
               type: 'warning',
               message: '等待用户付款中'
@@ -163,10 +159,26 @@ export default {
           } else {
             this.info = {
               type: 'error',
-              message: err
+              message: utilsPay.error.detail
             }
           }
         }
+      }).catch(error => {
+        this.handerEnd()
+        if (error.message.indexOf('timeout of') !== -1) {
+          this.info = {
+            type: 'warning',
+            message: '支付超时查询支付中'
+          }
+        } else {
+          const detail = error.response.data.detail
+          this.$notify({
+            type: 'error',
+            title: '支付失败',
+            message: detail
+          })
+        }
+        this.handerPayQuery()
       })
     },
     isJSON(str) {
