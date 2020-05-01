@@ -9,6 +9,16 @@ export function SelfAmount(data) {
     }
   })
 }
+export function SelfFee(data) {
+  return request({
+    url: '/pay-api/orders/selfFee',
+    method: 'post',
+    data: {
+      'list_query': data
+    }
+  })
+}
+
 export function SelfList(data) {
   return request({
     url: '/pay-api/orders/selfList',

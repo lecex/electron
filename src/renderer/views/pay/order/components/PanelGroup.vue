@@ -11,6 +11,12 @@
           </div>
           <count-to :start-val="0" :end-val="order/100" :duration="1000" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
         </div>
+        <div class="card-panel-description-fee">
+          <div class="card-panel-text">
+            手续费
+          </div>
+          <count-to :start-val="0" :end-val="orderFee/100" :duration="3000" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
+        </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
@@ -24,6 +30,12 @@
           </div>
           <count-to :start-val="0" :end-val="wechat/100" :duration="2000" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
         </div>
+        <div class="card-panel-description-fee">
+          <div class="card-panel-text">
+            手续费
+          </div>
+          <count-to :start-val="0" :end-val="wechatFee/100" :duration="3000" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
+        </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
@@ -36,6 +48,12 @@
             支付宝
           </div>
           <count-to :start-val="0" :end-val="alipay/100" :duration="3000" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
+        </div>
+        <div class="card-panel-description-fee">
+          <div class="card-panel-text">
+            手续费
+          </div>
+          <count-to :start-val="0" :end-val="alipayFee/100" :duration="3000" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -59,6 +77,18 @@ export default {
       default: 0
     },
     alipay: {
+      type: Number,
+      default: 0
+    },
+    orderFee: {
+      type: Number,
+      default: 0
+    },
+    wechatFee: {
+      type: Number,
+      default: 0
+    },
+    alipayFee: {
       type: Number,
       default: 0
     }
@@ -144,6 +174,21 @@ export default {
       }
       .card-panel-num {
         font-size: 20px;
+      }
+    }
+    .card-panel-description-fee {
+      float: left;
+      font-weight: bold;
+      margin: 26px;
+      margin-right: 0px;
+      .card-panel-text {
+        line-height: 14px;
+        color: rgba(0, 0, 0, 0.45);
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+      .card-panel-num {
+        font-size: 16px;
       }
     }
   }

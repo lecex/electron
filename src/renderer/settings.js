@@ -14,6 +14,7 @@ module.exports = {
    */
   sidebarLogo: true,
 
-  baseUrl: 'http://rpc.xilewanggou.com'
+  // baseUrl: 'http://rpc.xilewanggou.com'
+  baseUrl: 'http://rpc.binzhou.vip'
   // baseUrl: 'http://127.0.0.1:8080'
 }

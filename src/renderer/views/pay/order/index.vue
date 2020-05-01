@@ -77,6 +77,11 @@
           <span>{{ (scope.row.totalAmount/100).toFixed(2) }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="手续费" prop="title" align="center" min-width="120">
+        <template slot-scope="scope">
+          <span>{{ (scope.row.fee?scope.row.fee/100:0).toFixed(2) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" prop="stauts" align="center" width="120">
         <template slot-scope="scope">
           <el-tag v-if="Number(scope.row.stauts)===-1" type="warning"><svg-icon icon-class="warning" class="warning"/> 订单关闭</el-tag>
