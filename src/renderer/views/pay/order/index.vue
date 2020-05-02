@@ -54,7 +54,7 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column> -->
-      <el-table-column label="订单编号" prop="id" align="center" width="220">
+      <el-table-column label="订单编号" prop="id" sortable="custom" align="center" width="220">
         <template slot-scope="scope">
           <span>{{ scope.row.orderNo }}</span>
         </template>
@@ -72,29 +72,29 @@
           <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="订单金额" prop="title" align="center" min-width="120">
+      <el-table-column label="订单金额" prop="title" sortable="custom" align="center" min-width="120">
         <template slot-scope="scope">
           <span>{{ (scope.row.totalAmount/100).toFixed(2) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手续费" prop="title" align="center" min-width="120">
+      <el-table-column label="手续费" prop="title" sortable="custom" align="center" min-width="120">
         <template slot-scope="scope">
           <span>{{ (scope.row.fee?scope.row.fee/100:0).toFixed(2) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态" prop="stauts" align="center" width="120">
+      <el-table-column label="状态" prop="stauts" sortable="custom" align="center" width="120">
         <template slot-scope="scope">
           <el-tag v-if="Number(scope.row.stauts)===-1" type="warning"><svg-icon icon-class="warning" class="warning"/> 订单关闭</el-tag>
           <el-tag v-if="Number(scope.row.stauts)===0||!scope.row.stauts" type="warning"><svg-icon icon-class="warning" class="warning"/> 待付款</el-tag>
           <el-tag v-if="Number(scope.row.stauts)===1" type="success"><svg-icon icon-class="success" class="success"/> 支付成功</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作员" prop="operatorId" align="center" min-width="80">
+      <el-table-column label="操作员" prop="operator_id" sortable="custom" align="center" min-width="90">
         <template slot-scope="scope">
           <span>{{ scope.row.operatorId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="终端" prop="terminalId" align="center" min-width="80">
+      <el-table-column label="终端" prop="terminal_id" sortable="custom" align="center" min-width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.terminalId }}</span>
         </template>
