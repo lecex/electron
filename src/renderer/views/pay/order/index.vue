@@ -228,7 +228,7 @@ export default {
             title: '支付成功',
             message: '付款成功'
           })
-          // this.getList()
+          this.getList()
         } else {
           if (utilsPay.error.code === 'USERPAYING') {
             this.$notify({
