@@ -92,29 +92,7 @@ export default {
     handerPay() {
       AopF2F(this.order).then(response => {
         this.handerEnd()
-        utilsPay.hander(response.data, this.order.method)
-        if (utilsPay.valid) {
-          this.info = {
-            type: 'success',
-            message: '支付成功'
-          }
-        } else {
-          if (utilsPay.error.code === 'USERPAYING') {
-            this.info = {
-              type: 'warning',
-              message: '等待用户付款中'
-            }
-            this.sleep = 7
-            setTimeout(() => {
-              this.handerPayQuery()
-            }, this.sleep * 1000)// 等待10秒
-          } else {
-            this.info = {
-              type: 'error',
-              message: utilsPay.error.detail
-            }
-          }
-        }
+        this.handerPayQuery()
       }).catch((error) => {
         this.handerEnd()
         if (error.message.indexOf('timeout of') !== -1) {

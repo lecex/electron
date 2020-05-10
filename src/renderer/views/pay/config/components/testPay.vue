@@ -54,7 +54,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.order.totalAmount = this.totalAmount * 100// 换算成分
+          this.order.totalAmount = Math.round(this.totalAmount * 100) // 换算成分
           this.$refs.pay.hander(this.order)
         } else {
           console.log('error submit!!')
