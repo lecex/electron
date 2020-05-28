@@ -72,12 +72,12 @@
           <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="订单金额" prop="title" sortable="custom" align="center" min-width="120">
+      <el-table-column label="订单金额" prop="total_amount" sortable="custom" align="center" min-width="120">
         <template slot-scope="scope">
           <span>{{ (scope.row.totalAmount/100).toFixed(2) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手续费" prop="title" sortable="custom" align="center" min-width="120">
+      <el-table-column label="手续费" prop="fee" sortable="custom" align="center" min-width="120">
         <template slot-scope="scope">
           <span>{{ (scope.row.fee?scope.row.fee/100:0).toFixed(2) }}</span>
         </template>
