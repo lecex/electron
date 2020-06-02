@@ -9,6 +9,7 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
+              :default-time="['00:00:00', '23:59:59']"
             />
           </el-form-item>
           <el-form-item label="支付方式" prop="method">
@@ -39,7 +40,10 @@
           </el-form-item>
       </el-form>
     </div>
-
+    <div class="order-container">
+      <span>总金额: {{(orderTotal/100).toFixed(2)}} 元</span>
+      <span>手续费: {{(orderFee/100).toFixed(2)}} 元</span>
+    </div>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -120,7 +124,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { parseTime } from '@/utils'
-import { SelfList } from '@/api/pay-order'
+import { SelfList, SelfAmount, SelfFee } from '@/api/pay-order'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { Query } from '@/api/pay'
@@ -136,6 +140,8 @@ export default {
     return {
       list: null,
       total: 0,
+      orderTotal: 0,
+      orderFee: 0,
       listQuery: {
         page: 1,
         limit: 10,
@@ -145,7 +151,7 @@ export default {
       query: {
         date: [
           new Date(new Date(new Date().toLocaleDateString()).getTime() - 24 * 60 * 60 * 1000),
-          new Date(new Date(new Date().toLocaleDateString()).getTime())
+          new Date(new Date(new Date().toLocaleDateString()).getTime() - 1000)
         ],
         query: '',
         total_amount: '',
@@ -157,6 +163,10 @@ export default {
       dialogFormVisible: false, // 窗口关闭
       dialogDisabled: false, // 窗口按钮引用
       options: [
+        {
+          value: '',
+          label: '请选择'
+        },
         {
           value: 'wechat',
           label: '微信'
@@ -187,7 +197,9 @@ export default {
     getList() {
       let where = ' true'
       if (this.query.date) {
-        where = where + " And created_at >= '" + parseTime(this.query.date[0]) + "' And created_at < '" + parseTime(this.query.date[1]) + "'"
+        const start = parseTime(this.query.date[0])
+        const end = parseTime(new Date(this.query.date[1].getTime() + 1000))
+        where = where + " And created_at >= '" + start + "' And created_at < '" + end + "'"
       }
       if (this.query.method) {
         where = where + " And method = '" + this.query.method + "'"
@@ -211,6 +223,16 @@ export default {
         this.total = Number(response.data.total)
         // Just to simulate the time of the request
         this.listLoading = false
+      })
+      SelfAmount({
+        where: where
+      }).then(response => {
+        this.orderTotal = Number(response.data.total) || 0
+      })
+      SelfFee({
+        where: where
+      }).then(response => {
+        this.orderFee = Number(response.data.total) || 0
       })
     },
     resetForm(formName) {
@@ -272,5 +294,13 @@ export default {
 }
 .warning{
   color: #E6A23C;
+}
+.order-container{
+  color: #F56C6C;
+  padding: 1vh;
+  font-weight:700;
+  span{
+    margin-left: 2vw;
+  }
 }
 </style>

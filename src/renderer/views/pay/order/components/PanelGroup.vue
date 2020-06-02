@@ -9,13 +9,13 @@
           <div class="card-panel-text">
             总金额
           </div>
-          <count-to :start-val="0" :end-val="order/100" :duration="1000" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
+          <count-to :start-val="0" :end-val="order/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
         </div>
         <div class="card-panel-description-fee">
           <div class="card-panel-text">
             手续费
           </div>
-          <count-to :start-val="0" :end-val="orderFee/100" :duration="3000" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
+          <count-to :start-val="0" :end-val="orderFee/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -28,13 +28,13 @@
           <div class="card-panel-text">
             微信
           </div>
-          <count-to :start-val="0" :end-val="wechat/100" :duration="2000" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
+          <count-to :start-val="0" :end-val="wechat/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
         </div>
         <div class="card-panel-description-fee">
           <div class="card-panel-text">
             手续费
           </div>
-          <count-to :start-val="0" :end-val="wechatFee/100" :duration="3000" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
+          <count-to :start-val="0" :end-val="wechatFee/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -47,13 +47,13 @@
           <div class="card-panel-text">
             支付宝
           </div>
-          <count-to :start-val="0" :end-val="alipay/100" :duration="3000" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
+          <count-to :start-val="0" :end-val="alipay/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
         </div>
         <div class="card-panel-description-fee">
           <div class="card-panel-text">
             手续费
           </div>
-          <count-to :start-val="0" :end-val="alipayFee/100" :duration="3000" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
+          <count-to :start-val="0" :end-val="alipayFee/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
         </div>
       </div>
     </el-col>
