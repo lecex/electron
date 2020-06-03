@@ -5,6 +5,9 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
+      <span class="name">
+        {{name}}
+      </span>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
@@ -44,7 +47,8 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'name'
     ])
   },
   methods: {
@@ -92,7 +96,14 @@ export default {
     &:focus {
       outline: none;
     }
-
+    .name{
+      display: inline-block;
+      padding: 0 8px;
+      height: 100%;
+      font-size: 14px;
+      color: #5a5e66;
+      vertical-align: text-bottom;
+    }
     .right-menu-item {
       display: inline-block;
       padding: 0 8px;
