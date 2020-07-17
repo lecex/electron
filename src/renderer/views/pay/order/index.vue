@@ -205,7 +205,7 @@ export default {
         where = where + " And method = '" + this.query.method + "'"
       }
       if (this.query.total_amount) {
-        where = where + ' And total_amount =' + this.query.total_amount * 100
+        where = where + ' And total_amount =' + Number(this.query.total_amount * 100)
       }
       if (this.query.order_no) {
         where = where + " And order_no like '%" + this.query.order_no + "%'"
