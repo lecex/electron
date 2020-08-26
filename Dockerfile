@@ -12,3 +12,4 @@ FROM nginx:alpine
 RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 WORKDIR /usr/share/nginx/html
 COPY --from=builder /go/src/github.com/lecex/electron/dist/web /usr/share/nginx/html
+CMD [ "./run.sh" ]
