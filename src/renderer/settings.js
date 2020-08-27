@@ -14,7 +14,7 @@ module.exports = {
    */
   sidebarLogo: true,
 
-  baseUrl: '/rpc'
+  baseUrl: document.getElementsByTagName('meta')['baseUrl'].getAttribute('content')
   // baseUrl: 'http://rpc.binzhou.vip'
   // baseUrl: 'http://127.0.0.1:8080'
 }
