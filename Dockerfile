@@ -14,4 +14,4 @@ WORKDIR /usr/share/nginx/html
 COPY --from=builder /go/src/github.com/lecex/electron/dist/web .
 COPY run.sh .
 RUN chmod +x ./run.sh
-# CMD [ "run.sh" ]
+CMD [ "./run.sh" ]
