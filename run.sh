@@ -1,1 +1,2 @@
-sed -i '' "s/\/rpc/$BASE_URL/g" index.html
+url=${BASE_URL//\//\\\/}
+sed -i "s/\/rpc/$url/g" ./index.html
