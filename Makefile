@@ -8,3 +8,9 @@ tag:
 .PHONY: docker
 docker:
 	docker build -f Dockerfile  -t pay
+.PHONY: run
+run:
+	npm run dev
+.PHONY: build
+build:
+	npm run build

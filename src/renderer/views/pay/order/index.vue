@@ -66,8 +66,8 @@
       <el-table-column label="支付方式" prop="method" align="center" width="120">
         <template slot-scope="scope">
           <span slot="label">
-            <span v-if="scope.row.method=='wechat'"><el-tag :class="scope.row.method"><svg-icon :icon-class="scope.row.method" :class="scope.row.method"/> 微信</el-tag></span>
-            <span v-if="scope.row.method=='alipay'"><el-tag :class="scope.row.method"><svg-icon :icon-class="scope.row.method" :class="scope.row.method"/> 支付宝</el-tag></span>
+            <span v-if="scope.row.method=='wechat'"><el-tag size="mini" :class="scope.row.method"><svg-icon :icon-class="scope.row.method" :class="scope.row.method"/> 微信</el-tag></span>
+            <span v-if="scope.row.method=='alipay'"><el-tag size="mini" :class="scope.row.method"><svg-icon :icon-class="scope.row.method" :class="scope.row.method"/> 支付宝</el-tag></span>
           </span>
         </template>
       </el-table-column>
@@ -82,15 +82,24 @@
         </template>
       </el-table-column>
       <el-table-column label="手续费" prop="fee" sortable="custom" align="center" min-width="120">
-        <template slot-scope="scope">
-          <span>{{ (scope.row.fee?scope.row.fee/100:0).toFixed(2) }}</span>
+        <template slot-scope="{row}">
+          <span>{{ (row.fee?row.fee/100:0).toFixed(2) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="状态" prop="stauts" sortable="custom" align="center" width="120">
-        <template slot-scope="scope">
-          <el-tag v-if="Number(scope.row.stauts)===-1" type="danger"><svg-icon icon-class="danger" class="danger"/> 订单关闭</el-tag>
-          <el-tag v-if="Number(scope.row.stauts)===0||!scope.row.stauts" type="warning"><svg-icon icon-class="warning" class="warning"/> 待付款</el-tag>
-          <el-tag v-if="Number(scope.row.stauts)===1" type="success"><svg-icon icon-class="success" class="success"/> 支付成功</el-tag>
+        <template slot-scope="{row}">
+          <span v-if="row.totalAmount>0">
+            <el-tag v-if="Number(row.stauts)===-1" size="mini" type="danger"><svg-icon icon-class="error" class="danger"/> 订单关闭</el-tag>
+            <el-tag v-if="Number(row.stauts)===0||!row.stauts" size="mini" type="warning"><svg-icon icon-class="warning" class="warning"/> 待付款</el-tag>
+            <el-tag v-if="Number(row.stauts)===1" size="mini" type="success"><svg-icon icon-class="success" class="success"/> 支付成功</el-tag>
+          </span>
+          <span v-else>
+            <el-tag v-if="Number(row.stauts)===0||!row.stauts" size="mini" type="warning"><svg-icon icon-class="warning" class="warning"/> 待退款</el-tag>
+            <el-tag v-if="Number(row.stauts)===1" size="mini" type="info"><svg-icon icon-class="error" class="info"/> 退款成功</el-tag>
+          </span>
+          <span v-if="row.refundFee">
+            <el-tag v-if="Number(row.stauts)===1" size="mini" type="info"><svg-icon icon-class="error" class="info"/> 已退款 {{ (row.refundFee?row.refundFee/100:0).toFixed(2) }}</el-tag>
+          </span>
         </template>
       </el-table-column>
       <el-table-column label="操作员" prop="operator_id" sortable="custom" align="center" min-width="90">
@@ -103,15 +112,24 @@
           <span>{{ scope.row.terminalId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" prop="created_at" sortable="custom" align="center" width="220">
+      <el-table-column label="创建时间" prop="created_at" sortable="custom" align="center" width="210">
         <template slot-scope="scope">
           <span>{{ scope.row.createdAt  }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="260" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button size="mini" type="primary" @click="handerPayQuery(row)">
-            支付查询
+          <el-button v-if="row.totalAmount>0" size="mini" type="primary" @click="handerQuery(row)">
+            查询
+          </el-button>
+          <el-button v-if="row.totalAmount>0 && Number(row.stauts)===1 &&  !row.refundFee" size="mini" type="danger" @click="handerCancel(row)">
+            撤销
+          </el-button>
+          <el-button v-if="row.totalAmount>0 && Number(row.stauts)===1 && !row.refundFee" size="mini" type="warning" @click="handerRefund(row)">
+            退款
+          </el-button>
+          <el-button v-if="row.totalAmount<0 && Number(row.stauts)!==1" size="mini" type="danger" @click="handerAffirmRefund(row)">
+            确认退款
           </el-button>
         </template>
       </el-table-column>
@@ -127,7 +145,7 @@ import { parseTime } from '@/utils'
 import { SelfList, SelfAmount, SelfFee } from '@/api/pay-order'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { Query } from '@/api/pay'
+import { Query, Cancel, OpenRefund, AffirmRefund } from '@/api/pay'
 import utilsPay from '@/utils/pay'
 export default {
   name: 'ORderList',
@@ -150,8 +168,8 @@ export default {
       },
       query: {
         date: [
-          new Date(new Date(new Date().toLocaleDateString()).getTime() - 24 * 60 * 60 * 1000),
-          new Date(new Date(new Date().toLocaleDateString()).getTime() - 1000)
+          new Date(new Date(new Date().toLocaleDateString()).getTime()),
+          new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 - 1000)
         ],
         query: '',
         total_amount: '',
@@ -238,7 +256,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
-    handerPayQuery(order) {
+    handerQuery(order) {
       Query({
         orderNo: order.orderNo,
         storeId: order.storeId
@@ -261,7 +279,7 @@ export default {
           } else {
             this.$notify({
               type: 'error',
-              title: '未支付',
+              title: '未支付状态',
               message: utilsPay.error.detail
             })
           }
@@ -272,6 +290,116 @@ export default {
           type: 'error',
           title: '支付失败',
           message: detail
+        })
+      })
+    },
+    handerCancel(order) {
+      this.$confirm('此操作将关闭订单,如付款成功原路退回, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'error'
+      }).then(() => {
+        Cancel({
+          orderNo: order.orderNo,
+          storeId: order.storeId
+        }).then(response => { // 远程支付开始
+          const valid = response.data.valid
+          if (valid) {
+            this.$message({
+              type: 'success',
+              title: '撤销支付成功',
+              message: '撤销支付成功'
+            })
+            this.getList()
+          } else {
+            this.$notify({
+              type: 'error',
+              title: '撤销支付失败',
+              message: response.data.error.detail
+            })
+          }
+          console.log(response.data.error)
+        }).catch(error => {
+          const detail = error.response.data.detail
+          this.$notify({
+            type: 'error',
+            title: '撤销订单失败',
+            message: detail
+          })
+        })
+      }).catch(() => {
+        self.$message({
+          type: 'info',
+          message: '已取消撤销订单'
+        })
+      })
+    },
+    handerRefund(order) {
+      OpenRefund({
+        orderNo: order.orderNo,
+        storeId: order.storeId
+      }).then(response => { // 远程支付开始
+        const valid = response.data.valid
+        if (valid) {
+          this.$message({
+            type: 'success',
+            title: '退款申请成功,等待确认。',
+            message: '退款申请成功,等待确认。'
+          })
+          this.getList()
+        } else {
+          this.$notify({
+            type: 'error',
+            title: '退款申请成功失败。',
+            message: response.data.error.detail
+          })
+        }
+      }).catch(error => {
+        const detail = error.response.data.detail
+        this.$notify({
+          type: 'error',
+          title: '退款订单失败',
+          message: detail
+        })
+      })
+    },
+    handerAffirmRefund(order) {
+      this.$confirm('此操作将关闭订单,如付款成功原路退回, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'error'
+      }).then(() => {
+        AffirmRefund({
+          orderNo: order.orderNo,
+          storeId: order.storeId
+        }).then(response => { // 远程支付开始
+          const valid = response.data.valid
+          if (valid) {
+            this.$message({
+              type: 'success',
+              title: '确认退款申请成功。',
+              message: '确认退款申请成功。'
+            })
+            this.getList()
+          } else {
+            this.$notify({
+              type: 'error',
+              title: '确认退款申请失败。',
+              message: response.data.error.detail
+            })
+          }
+        }).catch(error => {
+          const detail = error.response.data.detail
+          this.$notify({
+            type: 'error',
+            title: '确认退款申请失败',
+            message: detail
+          })
+        })
+      }).catch(() => {
+        self.$message({
+          type: 'info',
+          message: '已取消退款申请'
         })
       })
     }

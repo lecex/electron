@@ -20,6 +20,20 @@
           <el-form-item label="子商家ID" prop="subMchId">
             <el-input v-model="config.wechat.subMchId"></el-input>
           </el-form-item>
+          <el-form-item label="证书" prop="pemCert">
+            <el-input 
+              v-model="config.wechat.pemCert"
+              type="textarea"
+              :rows="3"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="秘钥" prop="pemKey">
+            <el-input 
+              v-model="config.wechat.pemKey"
+              type="textarea"
+              :rows="3"
+            ></el-input>
+          </el-form-item>
           <el-form-item label="沙盒模式" prop="sandbox">
             <el-switch
               v-model="config.wechat.sandbox"
@@ -112,6 +126,8 @@ export default {
           apiKey: '',
           subAppId: '',
           subMchId: '',
+          pemCert: '',
+          pemKey: '',
           fee: 0,
           sandbox: false
         },
