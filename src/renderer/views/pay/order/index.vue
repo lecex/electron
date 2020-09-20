@@ -336,7 +336,7 @@ export default {
     },
     handerRefund(order) {
       OpenRefund({
-        orderNo: order.orderNo,
+        originalOrderNo: order.orderNo,
         storeId: order.storeId
       }).then(response => { // 远程支付开始
         const valid = response.data.valid
