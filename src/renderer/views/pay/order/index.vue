@@ -129,7 +129,7 @@
           <el-button v-if="row.totalAmount>0 && Number(row.stauts)===1 && !row.refundFee" size="mini" type="warning" @click="handerRefund(row)">
             退款
           </el-button>
-          <el-button size="mini" type="danger" @click="handerAffirmRefund(row)">
+          <el-button v-if="row.totalAmount<0 && Number(row.stauts)!==1" size="mini" type="danger" @click="handerAffirmRefund(row)">
             确认退款
           </el-button>
         </template>
