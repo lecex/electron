@@ -94,7 +94,8 @@
             <el-tag v-if="Number(row.stauts)===1" size="mini" type="success"><svg-icon icon-class="success" class="success"/> 支付成功</el-tag>
           </span>
           <span v-else>
-            <el-tag v-if="Number(row.stauts)===0||!row.stauts" size="mini" type="warning"><svg-icon icon-class="warning" class="warning"/> 待退款</el-tag>
+            <el-tag v-if="Number(row.stauts)===-1" size="mini" type="danger"><svg-icon icon-class="error" class="danger"/> 退款关闭</el-tag>
+            <el-tag v-if="Number(row.stauts?row.stauts:0)===0" size="mini" type="warning"><svg-icon icon-class="warning" class="warning"/> 待退款</el-tag>
             <el-tag v-if="Number(row.stauts)===1" size="mini" type="info"><svg-icon icon-class="error" class="info"/> 退款成功</el-tag>
           </span>
           <span v-if="row.refundFee">
@@ -128,7 +129,7 @@
           <el-button v-if="row.totalAmount>0 && Number(row.stauts)===1 && !row.refundFee" size="mini" type="warning" @click="handerRefund(row)">
             退款
           </el-button>
-          <el-button v-if="row.totalAmount<0 && Number(row.stauts)!==1" size="mini" type="danger" @click="handerAffirmRefund(row)">
+          <el-button size="mini" type="danger" @click="handerAffirmRefund(row)">
             确认退款
           </el-button>
         </template>
