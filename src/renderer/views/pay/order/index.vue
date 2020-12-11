@@ -123,9 +123,9 @@
           <el-button v-if="row.totalAmount>0" size="mini" type="primary" @click="handerQuery(row)">
             查询
           </el-button>
-          <el-button v-if="row.totalAmount>0 && Number(row.stauts)===1 &&  !row.refundFee" size="mini" type="danger" @click="handerCancel(row)">
+          <!-- <el-button v-if="row.totalAmount>0 && Number(row.stauts)===1 &&  !row.refundFee" size="mini" type="danger" @click="handerCancel(row)">
             撤销
-          </el-button>
+          </el-button> -->
           <el-button v-if="row.totalAmount>0 && Number(row.stauts)===1 && !row.refundFee" size="mini" type="warning" @click="handerRefund(row)">
             退款
           </el-button>
