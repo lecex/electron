@@ -14,6 +14,6 @@ module.exports = {
    */
   sidebarLogo: true,
 
-  baseUrl: document.getElementsByTagName('meta')['baseUrl'].getAttribute('content')
-  // baseUrl: 'http://127.0.0.1:8080'
+  // baseUrl: document.getElementsByTagName('meta')['baseUrl'].getAttribute('content')
+  baseUrl: 'http://rpc.xilewanggou.com'
 }
