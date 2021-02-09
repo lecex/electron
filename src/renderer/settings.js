@@ -14,6 +14,6 @@ module.exports = {
    */
   sidebarLogo: true,
 
-  // baseUrl: document.getElementsByTagName('meta')['baseUrl'].getAttribute('content')
-  baseUrl: '/rpc'
+  baseUrl: document.getElementsByTagName('meta')['baseUrl'].getAttribute('content')
+  // baseUrl: 'http://rpc.xilewanggou.com'
 }
