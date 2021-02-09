@@ -14,4 +14,4 @@ WORKDIR /usr/share/nginx/html
 COPY --from=builder /go/src/github.com/lecex/electron/dist/web .
 COPY run.sh /docker-entrypoint.d
 RUN chmod +x /docker-entrypoint.d/run.sh
-CMD [ "./run.sh" ]
+CMD [ "/docker-entrypoint.d/run.sh" ]
