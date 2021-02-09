@@ -109,7 +109,7 @@
         <el-form-item
           v-for="(item,key) in permissions"
           :key="key"
-          label="key"
+          :label="key"
         >
           <checkbox-indeterminate
             v-if="dialogPermissionVisible"
