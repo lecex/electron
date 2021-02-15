@@ -1,3 +1,8 @@
+
+let baseUrl = document.getElementsByTagName('meta')['baseUrl'].getAttribute('content')
+if (process.env.NODE_ENV === 'development') {
+  baseUrl = 'http://127.0.0.1:8080/'
+}
 module.exports = {
 
   title: 'App Desk',
@@ -14,5 +19,5 @@ module.exports = {
    */
   sidebarLogo: true,
 
-  baseUrl: document.getElementsByTagName('meta')['baseUrl'].getAttribute('content')
+  baseUrl: baseUrl
 }
