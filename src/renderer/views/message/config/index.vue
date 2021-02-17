@@ -125,10 +125,7 @@ export default {
           this.config = response.data.config
         }
       }).catch(error => {
-        this.$message({
-          type: 'error',
-          message: '获取消息配置失败:' + error
-        })
+        console.error(error.response)
       })
     },
     submitForm() {
@@ -141,10 +138,7 @@ export default {
           this.getInfo()
         }
       }).catch(error => {
-        this.$message({
-          type: 'error',
-          message: '消息配置失败:' + error
-        })
+        console.error(error.response)
       })
     },
     resetForm(formName) {

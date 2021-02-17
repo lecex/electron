@@ -82,7 +82,15 @@ service.interceptors.response.use(
   error => {
     // 错误提示
     if (service.defaults.error) {
-      const detail = error.response.data.detail
+      let detail = error.response.data.detail
+      switch (detail) {
+        case 'Permission denied':
+          detail = '您没有权限进行次操作'
+          break
+
+        default:
+          break
+      }
       Message({
         message: detail,
         type: 'error',
