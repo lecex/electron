@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { VerifySend } from '@/api/message'
+import { SendCaptcha } from '@/api/message'
 export default {
   name: 'TestPay',
   props: {},
@@ -44,7 +44,7 @@ export default {
       ],
       send: {
         addressee: '',
-        event: 'register_verify', // 默认注册代码
+        event: 'sms_captcha', // 默认注册代码
         type: 'sms'
       },
       rules: {
@@ -62,7 +62,7 @@ export default {
         if (valid) {
           switch (this.send.type) {
             case 'sms':
-              VerifySend(this.send).then(response => {
+              SendCaptcha(this.send).then(response => {
                 if (response.data.valid) {
                   this.$message({
                     type: 'success',
