@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function VerifySend(data) {
   return request({
-    url: '/message-api/message/verifySend',
+    url: '/message-api/message/sendCaptcha',
     method: 'post',
     data: data
   })
