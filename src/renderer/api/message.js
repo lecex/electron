@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function VerifySend(data) {
+export function SendCaptcha(data) {
   return request({
     url: '/message-api/message/sendCaptcha',
     method: 'post',
