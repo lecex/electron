@@ -143,17 +143,17 @@ export default {
         }
       },
       wechatRules: {
-        appId: [{ required: true, message: '请输入应用APPID', trigger: 'change' }],
-        mchId: [{ required: true, message: '请输入商家APPID', trigger: 'change' }],
-        apiKey: [{ required: true, message: '请输入API秘钥', trigger: 'change' }],
-        subAppId: [{ message: '请输入子应用ID', trigger: 'change' }],
-        subMchId: [{ required: true, message: '请输入子商家ID', trigger: 'change' }]
+        // appId: [{ required: true, message: '请输入应用APPID', trigger: 'change' }],
+        // mchId: [{ required: true, message: '请输入商家APPID', trigger: 'change' }],
+        // apiKey: [{ required: true, message: '请输入API秘钥', trigger: 'change' }],
+        // subAppId: [{ message: '请输入子应用ID', trigger: 'change' }],
+        // subMchId: [{ required: true, message: '请输入子商家ID', trigger: 'change' }]
       },
       alipayRules: {
-        appId: [{ required: true, message: '请输入应用ID', trigger: 'change' }],
-        privateKey: [{ required: true, message: '请输入私钥', trigger: 'change' }],
-        aliPayPublicKey: [{ required: true, message: '请输入支付宝公钥', trigger: 'change' }],
-        signType: [{ required: true, message: '选择签名方式', trigger: 'change' }]
+        // appId: [{ required: true, message: '请输入应用ID', trigger: 'change' }],
+        // privateKey: [{ required: true, message: '请输入私钥', trigger: 'change' }],
+        // aliPayPublicKey: [{ required: true, message: '请输入支付宝公钥', trigger: 'change' }],
+        // signType: [{ required: true, message: '选择签名方式', trigger: 'change' }]
       },
       wechatFee: '',
       alipayFee: ''
