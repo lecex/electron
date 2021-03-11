@@ -9,7 +9,8 @@
           <div class="card-panel-text">
             总金额
           </div>
-          <count-to :start-val="0" :end-val="order/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
+          <count-to :start-val="0" :end-val="order/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" /><br>
+          <count-to :start-val="0" :end-val="(order-orderFee)/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num arrival" />
         </div>
         <div class="card-panel-description-fee">
           <div class="card-panel-text">
@@ -28,7 +29,8 @@
           <div class="card-panel-text">
             微信
           </div>
-          <count-to :start-val="0" :end-val="wechat/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
+          <count-to :start-val="0" :end-val="wechat/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" /><br>
+          <count-to :start-val="0" :end-val="(wechat-wechatFee)/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num arrival" />
         </div>
         <div class="card-panel-description-fee">
           <div class="card-panel-text">
@@ -47,7 +49,8 @@
           <div class="card-panel-text">
             支付宝
           </div>
-          <count-to :start-val="0" :end-val="alipay/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" />
+          <count-to :start-val="0" :end-val="alipay/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num" /><br>
+          <count-to :start-val="0" :end-val="(alipay-alipayFee)/100" :duration="500" :decimals='2' separator=',' prefix='¥ ' class="card-panel-num arrival" />
         </div>
         <div class="card-panel-description-fee">
           <div class="card-panel-text">
@@ -174,6 +177,10 @@ export default {
       }
       .card-panel-num {
         font-size: 20px;
+      }
+      .arrival{
+        color: #67C23A;
+        font-size: 18px;
       }
     }
     .card-panel-description-fee {
