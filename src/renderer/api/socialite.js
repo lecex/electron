@@ -10,18 +10,56 @@ export function Auth(socialite) {
   })
 }
 
-export function ConfigGet() {
+export function All() {
   return request({
-    url: '/socialite-api/configs/get',
+    url: '/socialite-api/configs/all',
     method: 'post',
     data: {
     }
   })
 }
 
-export function ConfigUpdate(data) {
+export function List(data) {
+  return request({
+    url: '/socialite-api/configs/list',
+    method: 'post',
+    data: {
+      'list_query': data
+    }
+  })
+}
+
+export function Get(data) {
+  return request({
+    url: '/socialite-api/configs/get',
+    method: 'post',
+    data: {
+      'config': data
+    }
+  })
+}
+
+export function Create(data) {
+  return request({
+    url: '/socialite-api/configs/create',
+    method: 'post',
+    data: {
+      'config': data
+    }
+  })
+}
+export function Update(data) {
   return request({
     url: '/socialite-api/configs/update',
+    method: 'post',
+    data: {
+      'config': data
+    }
+  })
+}
+export function Delete(data) {
+  return request({
+    url: '/socialite-api/configs/delete',
     method: 'post',
     data: {
       'config': data
