@@ -62,11 +62,20 @@
     <!-- 创建、编辑弹窗 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="formData" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="名称" prop="name">
-          <el-input v-model="formData.name" />
-        </el-form-item>
         <el-form-item label="驱动" prop="driver">
-          <el-input v-model="formData.driver" />
+          <el-select 
+            v-model="formData.driver" 
+            placeholder="请选择驱动"
+            @change="changeHandler"
+          >
+              <el-option
+              v-for="(value,key) in options"
+              :key="key"
+              :label="value"
+              :value="key"
+              >
+              </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="ClientId" prop="clientId">
           <el-input v-model="formData.clientId" />
@@ -93,15 +102,23 @@
 
 <script>
 import { List, Create, Delete, Update } from '@/api/socialite'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // import testAuth from './components/testAuth.vue'
 import waves from '@/directive/waves' // waves directive
 export default {
   name: 'ConfigList',
-  // components: { testAuth },
+  components: {
+    // testAuth,
+    Pagination
+  },
   directives: { waves },
   props: {},
   data() {
     return {
+      options: {
+        miniprogram_wechat: '微信小程序',
+        wechat: '微信'
+      },
       list: null,
       total: 0,
       listLoading: true,
@@ -127,14 +144,6 @@ export default {
         status: true
       },
       rules: {
-        driver: [
-          { required: true, message: '请输入驱动名称', trigger: 'blur' },
-          { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }
-        ],
-        name: [
-          { required: true, message: '请输入驱动英文标识', trigger: 'blur' },
-          { min: 4, max: 32, message: '长度在 4 到 32 个字符', trigger: 'blur' }
-        ],
         clientId: [
           { required: true, message: '请输入驱动客户端ID 一般为AppID', trigger: 'blur' },
           { min: 4, max: 64, message: '长度在 4 到 64 个字符', trigger: 'blur' }
@@ -152,6 +161,9 @@ export default {
     this.getList()
   },
   methods: {
+    changeHandler(key) {
+      this.formData.name = this.options[key]
+    },
     sortChange(data) {
       if (data.prop) {
         this.listQuery.sort = (data.prop + ' ' + data.order).replace('ending', '')
