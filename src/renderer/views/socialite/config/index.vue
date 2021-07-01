@@ -41,9 +41,10 @@
           <span>{{ scope.row.clientSecret }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态" prop="status" align="center" min-width="50">
+      <el-table-column label="状态" prop="status" align="center" min-width="100">
         <template slot-scope="scope">
-          <span>{{ scope.row.status }}</span>
+          <el-tag v-if="scope.row.status" type="success">开启</el-tag>
+          <el-tag v-else type="danger">禁用</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
@@ -61,7 +62,7 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
     <!-- 创建、编辑弹窗 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="formData" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :model="formData" label-position="left" label-width="110px" style="width: 400px; margin-left:50px;">
         <el-form-item label="驱动" prop="driver">
           <el-select 
             v-model="formData.driver" 
@@ -84,7 +85,11 @@
           <el-input v-model="formData.clientSecret" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
-          {{formData.status}}
+          <el-switch
+            v-model="formData.status"
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+          </el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
