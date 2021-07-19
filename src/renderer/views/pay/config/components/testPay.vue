@@ -6,6 +6,7 @@
             <el-radio-group v-model="order.method">
               <el-radio label="wechat"><svg-icon icon-class="wechat" class="wechat"/> 微信</el-radio>
               <el-radio label="alipay"><svg-icon icon-class="alipay" class="alipay"/> 支付宝</el-radio>
+              <el-radio label="icbc"><svg-icon icon-class="icbc" class="icbc"/> 工行</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="付款码" prop="privateKey">
@@ -75,5 +76,9 @@ export default {
 }
 .alipay{
   color: #409EFF;
+}
+.icbc{
+  color: #ff0000;
+  font-size: 18px;
 }
 </style>

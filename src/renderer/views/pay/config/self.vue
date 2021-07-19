@@ -46,10 +46,6 @@
               <template slot="append">%</template>
             </el-input>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitForm('wechatForm')">保存</el-button>
-            <el-button @click="resetForm('wechatForm')">重置</el-button>
-          </el-form-item>
         </el-form>
       </el-tab-pane>
       <el-tab-pane>
@@ -100,13 +96,77 @@
               <template slot="append">%</template>
             </el-input>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitForm('alipayForm')">保存</el-button>
-            <el-button @click="resetForm('alipayForm')">重置</el-button>
+        </el-form>
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><svg-icon icon-class="icbc" class="icbc"/> 工行</span>
+        <el-form :model="config.icbc" :rules="icbcRules" ref="icbcForm" label-width="150px">
+          <el-form-item label="应用ID" prop="appId">
+            <el-input v-model="config.icbc.appId"></el-input>
+          </el-form-item>
+          <el-form-item label="私钥" prop="privateKey">
+            <el-input 
+              v-model="config.icbc.privateKey"
+              type="textarea"
+              :rows="3"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="工行公钥" prop="icbcPublicKey">
+            <el-input 
+              v-model="config.icbc.icbcPublicKey"
+              type="textarea"
+              :rows="3"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="发送签名方式" prop="signType">
+            <el-radio-group v-model="config.icbc.signType">
+              <el-radio label="RSA2"></el-radio>
+              <el-radio label="RSA"></el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="返回签名方式" prop="returnSignType">
+            <el-radio-group v-model="config.icbc.returnSignType">
+              <el-radio label="RSA2"></el-radio>
+              <el-radio label="RSA"></el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="商户ID" prop="merId">
+            <el-input 
+              v-model="config.icbc.merId"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="沙盒模式" prop="sandbox">
+            <el-switch
+              v-model="config.icbc.sandbox"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
+          </el-form-item>
+          <el-form-item label="手续费" prop="fee">
+            <el-input v-model="icbcFee" >
+              <template slot="append">%</template>
+            </el-input>
           </el-form-item>
         </el-form>
       </el-tab-pane>
     </el-tabs>
+    <el-form  label-width="150px">
+        <el-form-item/>
+        <el-form-item label="默认通道" prop="fee">
+            <el-select v-model="channel" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm()">保存</el-button>
+          <el-button @click="resetForm()">重置</el-button>
+        </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -119,7 +179,18 @@ export default {
   props: {},
   data() {
     return {
+      channel: '',
+      options: [
+        {
+          value: '',
+          label: '默认直连'
+        }, {
+          value: 'icbc',
+          label: '工行'
+        }
+      ],
       config: {
+        channel: '',
         wechat: {
           appId: '',
           mchId: '',
@@ -140,6 +211,16 @@ export default {
           sysServiceProviderId: '',
           fee: 0,
           sandbox: false
+        },
+        icbc: {
+          appId: '',
+          privateKey: '',
+          icbcPublicKey: '',
+          signType: 'RSA2',
+          returnSignType: 'RSA',
+          merId: '',
+          fee: 0,
+          sandbox: false
         }
       },
       wechatRules: {
@@ -155,8 +236,15 @@ export default {
         // aliPayPublicKey: [{ required: true, message: '请输入支付宝公钥', trigger: 'change' }],
         // signType: [{ required: true, message: '选择签名方式', trigger: 'change' }]
       },
+      icbcRules: {
+        // appId: [{ required: true, message: '请输入应用ID', trigger: 'change' }],
+        // privateKey: [{ required: true, message: '请输入私钥', trigger: 'change' }],
+        // aliPayPublicKey: [{ required: true, message: '请输入支付宝公钥', trigger: 'change' }],
+        // signType: [{ required: true, message: '选择签名方式', trigger: 'change' }]
+      },
       wechatFee: '',
-      alipayFee: ''
+      alipayFee: '',
+      icbcFee: ''
     }
   },
   created() {
@@ -169,33 +257,30 @@ export default {
       Info().then(response => {
         if (response.data.config) {
           this.config = response.data.config
+          if (this.config.channel) {
+            this.channel = this.config.channel
+          }
           this.wechatFee = this.config.wechat.fee ? (this.config.wechat.fee / 100).toFixed(2) : '' // 手续费转换为百分之一
           this.alipayFee = this.config.alipay.fee ? (this.config.alipay.fee / 100).toFixed(2) : ''// 手续费转换为百分之一
         }
       })
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          this.config.wechat.fee = Math.round(this.wechatFee * 100) // 手续费转换万分之一
-          this.config.alipay.fee = Math.round(this.alipayFee * 100) // 手续费转换万分之一
-          this.config.stauts = true
-          SelfUpdate(this.config).then(response => {
-            this.$message({
-              type: 'success',
-              message: '支付信息配置成功!'
-            })
-            this.getInfo()
-          }).catch(error => {
-            this.$message({
-              type: 'error',
-              message: '支付信息配置失败:' + error
-            })
-          })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
+      this.config.wechat.fee = Math.round(this.wechatFee * 100) // 手续费转换万分之一
+      this.config.alipay.fee = Math.round(this.alipayFee * 100) // 手续费转换万分之一
+      this.config.channel = this.channel
+      this.config.status = true
+      SelfUpdate(this.config).then(response => {
+        this.$message({
+          type: 'success',
+          message: '支付信息配置成功!'
+        })
+        this.getInfo()
+      }).catch(error => {
+        this.$message({
+          type: 'error',
+          message: '支付信息配置失败:' + error
+        })
       })
     },
     resetForm(formName) {
@@ -214,5 +299,9 @@ export default {
 }
 .alipay{
   color: #409EFF;
+}
+.icbc{
+  color: #ff0000;
+  font-size: 18px;
 }
 </style>

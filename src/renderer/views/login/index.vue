@@ -44,7 +44,7 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
-      <el-row class="stauts"> 
+      <el-row class="status"> 
         <el-col :span="2">
           <svg-icon v-bind:class="{ active: onLine }" icon-class="router" />  
         </el-col> 
@@ -257,7 +257,7 @@ $light_gray:#eee;
 </style>
 <style lang="less" scoped>
 @import "~@/assets/less/atom/syntax-variables.less";
-.stauts{
+.status{
   font-size: 16px;
   color: #ffffff;
   margin-bottom: 22px;

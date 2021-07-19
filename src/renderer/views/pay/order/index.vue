@@ -68,6 +68,7 @@
           <span slot="label">
             <span v-if="scope.row.method=='wechat'"><el-tag size="mini" :class="scope.row.method"><svg-icon :icon-class="scope.row.method" :class="scope.row.method"/> 微信</el-tag></span>
             <span v-if="scope.row.method=='alipay'"><el-tag size="mini" :class="scope.row.method"><svg-icon :icon-class="scope.row.method" :class="scope.row.method"/> 支付宝</el-tag></span>
+            <span v-if="scope.row.method=='icbc'"><el-tag size="mini" :class="scope.row.method"><svg-icon :icon-class="scope.row.method" :class="scope.row.method"/> 工行</el-tag></span>
           </span>
         </template>
       </el-table-column>
@@ -86,20 +87,20 @@
           <span>{{ (row.fee?row.fee/100:0).toFixed(2) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态" prop="stauts" sortable="custom" align="center" width="120">
+      <el-table-column label="状态" prop="status" sortable="custom" align="center" width="120">
         <template slot-scope="{row}">
           <span v-if="row.totalAmount>0">
-            <el-tag v-if="Number(row.stauts)===-1" size="mini" type="danger"><svg-icon icon-class="error" class="danger"/> 订单关闭</el-tag>
-            <el-tag v-if="Number(row.stauts)===0||!row.stauts" size="mini" type="warning"><svg-icon icon-class="warning" class="warning"/> 待付款</el-tag>
-            <el-tag v-if="Number(row.stauts)===1" size="mini" type="success"><svg-icon icon-class="success" class="success"/> 支付成功</el-tag>
+            <el-tag v-if="Number(row.status)===-1" size="mini" type="danger"><svg-icon icon-class="error" class="danger"/> 订单关闭</el-tag>
+            <el-tag v-if="Number(row.status)===0||!row.status" size="mini" type="warning"><svg-icon icon-class="warning" class="warning"/> 待付款</el-tag>
+            <el-tag v-if="Number(row.status)===1" size="mini" type="success"><svg-icon icon-class="success" class="success"/> 支付成功</el-tag>
           </span>
           <span v-else>
-            <el-tag v-if="Number(row.stauts)===-1" size="mini" type="danger"><svg-icon icon-class="error" class="danger"/> 退款关闭</el-tag>
-            <el-tag v-if="Number(row.stauts?row.stauts:0)===0" size="mini" type="warning"><svg-icon icon-class="warning" class="warning"/> 待退款</el-tag>
-            <el-tag v-if="Number(row.stauts)===1" size="mini" type="info"><svg-icon icon-class="error" class="info"/> 退款成功</el-tag>
+            <el-tag v-if="Number(row.status)===-1" size="mini" type="danger"><svg-icon icon-class="error" class="danger"/> 退款关闭</el-tag>
+            <el-tag v-if="Number(row.status?row.status:0)===0" size="mini" type="warning"><svg-icon icon-class="warning" class="warning"/> 待退款</el-tag>
+            <el-tag v-if="Number(row.status)===1" size="mini" type="info"><svg-icon icon-class="error" class="info"/> 退款成功</el-tag>
           </span>
           <span v-if="row.refundFee">
-            <el-tag v-if="Number(row.stauts)===1" size="mini" type="info"><svg-icon icon-class="error" class="info"/> 已退款 {{ (row.refundFee?row.refundFee/100:0).toFixed(2) }}</el-tag>
+            <el-tag v-if="Number(row.status)===1" size="mini" type="info"><svg-icon icon-class="error" class="info"/> 已退款 {{ (row.refundFee?row.refundFee/100:0).toFixed(2) }}</el-tag>
           </span>
         </template>
       </el-table-column>
@@ -123,13 +124,13 @@
           <el-button v-if="row.totalAmount>0" size="mini" type="primary" @click="handerQuery(row)">
             查询
           </el-button>
-          <!-- <el-button v-if="row.totalAmount>0 && Number(row.stauts)===1 &&  !row.refundFee" size="mini" type="danger" @click="handerCancel(row)">
+          <!-- <el-button v-if="row.totalAmount>0 && Number(row.status)===1 &&  !row.refundFee" size="mini" type="danger" @click="handerCancel(row)">
             撤销
           </el-button> -->
-          <!-- <el-button v-if="row.totalAmount>0 && Number(row.stauts)===1 && !row.refundFee" size="mini" type="warning" @click="handerRefund(row)">
+          <el-button v-if="row.totalAmount>0 && Number(row.status)===1 && !row.refundFee" size="mini" type="warning" @click="handerRefund(row)">
             退款
-          </el-button> -->
-          <el-button v-if="row.totalAmount<0 && Number(row.stauts)!==1" size="mini" type="danger" @click="handerAffirmRefund(row)">
+          </el-button>
+          <el-button v-if="row.totalAmount<0 && Number(row.status)!==1" size="mini" type="danger" @click="handerAffirmRefund(row)">
             确认退款
           </el-button>
         </template>
@@ -192,6 +193,9 @@ export default {
         }, {
           value: 'alipay',
           label: '支付宝'
+        }, {
+          value: 'icbc',
+          label: '工行'
         }
       ]
     }
@@ -414,6 +418,9 @@ export default {
 }
 .alipay{
   color: #409EFF;
+}
+.icbc{
+  color: #ff0000;
 }
 .error{
   color: #F56C6C;

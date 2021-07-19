@@ -84,10 +84,10 @@
           <span>{{ scope.row.alipay.appId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态" prop="stauts" align="center" width="80">
+      <el-table-column label="状态" prop="status" align="center" width="80">
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.stauts"
+            v-model="scope.row.status"
             @change="updateData(scope.row)"
             active-color="#13ce66"
             inactive-color="#ff4949">
